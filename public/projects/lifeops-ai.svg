@@ -1,0 +1,20 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="1000"><stop stop-color="#08110F"/><stop offset="1" stop-color="#0D1719"/></linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1190 180) rotate(125) scale(620 520)"><stop stop-color="#75F5B5" stop-opacity=".24"/><stop offset="1" stop-color="#75F5B5" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/><rect width="1600" height="1000" fill="url(#glow)"/>
+  <g opacity=".16" stroke="#DDF8E7"><path d="M0 120H1600M0 240H1600M0 360H1600M0 480H1600M0 600H1600M0 720H1600M0 840H1600"/><path d="M160 0V1000M320 0V1000M480 0V1000M640 0V1000M800 0V1000M960 0V1000M1120 0V1000M1280 0V1000M1440 0V1000"/></g>
+  <rect x="120" y="110" width="1360" height="780" rx="40" fill="#0B1214" stroke="#FFFFFF" stroke-opacity=".14"/>
+  <rect x="160" y="152" width="1280" height="68" rx="20" fill="#111C1D"/><circle cx="204" cy="186" r="8" fill="#75F5B5"/><text x="236" y="194" fill="#EAF4EE" font-family="Arial" font-size="24" font-weight="700">LifeOps AI</text><text x="1250" y="194" fill="#7C9188" font-family="monospace" font-size="18">AGENT ONLINE</text>
+  <rect x="160" y="252" width="286" height="594" rx="28" fill="#0F181A" stroke="#FFFFFF" stroke-opacity=".08"/><text x="194" y="304" fill="#75F5B5" font-family="monospace" font-size="16">WORKSPACE</text>
+  <g font-family="Arial" font-size="22" fill="#B9C8C1"><text x="194" y="365">Overview</text><text x="194" y="420">Calendar Agent</text><text x="194" y="475">Gmail Intelligence</text><text x="194" y="530">Knowledge Base</text><text x="194" y="585">Automations</text></g>
+  <rect x="486" y="252" width="954" height="594" rx="28" fill="#0D1517" stroke="#FFFFFF" stroke-opacity=".08"/>
+  <text x="530" y="310" fill="#EAF4EE" font-family="Arial" font-size="32" font-weight="700">Good afternoon, Touqeer.</text><text x="530" y="350" fill="#81948B" font-family="Arial" font-size="20">What should I handle for you?</text>
+  <rect x="530" y="394" width="820" height="98" rx="24" fill="#111D1E" stroke="#75F5B5" stroke-opacity=".26"/><text x="566" y="435" fill="#DDEBE4" font-family="Arial" font-size="20">Move tomorrow's AI project review to 4:30 PM</text><text x="566" y="468" fill="#75F5B5" font-family="monospace" font-size="14">CALENDAR TOOL · CONTEXT VERIFIED</text>
+  <path d="M785 534H1070" stroke="#75F5B5" stroke-opacity=".55" stroke-width="2" stroke-dasharray="8 10"/>
+  <g><rect x="530" y="574" width="220" height="124" rx="22" fill="#111D1E"/><text x="558" y="615" fill="#7F9389" font-family="monospace" font-size="13">01 · INTENT</text><text x="558" y="660" fill="#EAF4EE" font-family="Arial" font-size="22">Reschedule</text></g>
+  <g><rect x="780" y="574" width="220" height="124" rx="22" fill="#111D1E"/><text x="808" y="615" fill="#7F9389" font-family="monospace" font-size="13">02 · CONTEXT</text><text x="808" y="660" fill="#EAF4EE" font-family="Arial" font-size="22">Event found</text></g>
+  <g><rect x="1030" y="574" width="320" height="124" rx="22" fill="#11211C" stroke="#75F5B5" stroke-opacity=".28"/><text x="1058" y="615" fill="#75F5B5" font-family="monospace" font-size="13">03 · ACTION</text><text x="1058" y="660" fill="#EAF4EE" font-family="Arial" font-size="22">Calendar updated ✓</text></g>
+  <rect x="530" y="736" width="820" height="70" rx="20" fill="#0A1113" stroke="#FFFFFF" stroke-opacity=".1"/><text x="560" y="780" fill="#748780" font-family="Arial" font-size="18">Ask LifeOps anything…</text><circle cx="1315" cy="771" r="20" fill="#75F5B5"/>
+</svg>

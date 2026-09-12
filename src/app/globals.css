@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f4f5f1;
+  --foreground: #0c1111;
+  --muted: #626b68;
+  --muted-strong: #777f7d;
+  --surface: #eceee9;
+  --panel: rgba(255, 255, 255, 0.55);
+  --panel-strong: rgba(255, 255, 255, 0.82);
+  --nav: rgba(244, 245, 241, 0.82);
+  --line: rgba(11, 17, 17, 0.10);
+  --line-strong: rgba(11, 17, 17, 0.22);
+  --accent: #0b8c58;
+  --accent-soft: rgba(11, 140, 88, 0.12);
+}
+
+.dark {
+  --background: #080b0d;
+  --foreground: #eef4ef;
+  --muted: #89938f;
+  --muted-strong: #66716d;
+  --surface: #0d1214;
+  --panel: rgba(16, 22, 23, 0.66);
+  --panel-strong: rgba(22, 30, 30, 0.85);
+  --nav: rgba(8, 11, 13, 0.76);
+  --line: rgba(232, 242, 235, 0.095);
+  --line-strong: rgba(232, 242, 235, 0.19);
+  --accent: #75f5b5;
+  --accent-soft: rgba(117, 245, 181, 0.10);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: 100px;
+  background: var(--background);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--background);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid var(--background);
+  border-radius: 999px;
+  background: var(--line-strong);
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+code,
+.font-mono {
+  font-family: var(--font-geist-mono), monospace;
+}
+
+.section-space {
+  padding-block: clamp(5.5rem, 10vw, 9rem);
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, black 0%, black 58%, transparent 100%);
+  opacity: 0.52;
+}
+
+.hero-vignette {
+  background:
+    radial-gradient(circle at 74% 35%, var(--accent-soft), transparent 24%),
+    radial-gradient(circle at 18% 10%, var(--accent-soft), transparent 22%),
+    linear-gradient(to bottom, transparent 45%, var(--background) 98%);
+}
+
+.cursor-glow {
+  pointer-events: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  width: 440px;
+  height: 440px;
+  border-radius: 999px;
+  background: radial-gradient(circle, var(--accent-soft) 0%, transparent 67%);
+  opacity: 0.8;
+  will-change: transform;
+}
+
+.hero-node {
+  display: grid;
+  min-width: 74px;
+  min-height: 74px;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--nav);
+  color: var(--muted);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(16px);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+}
+
+.hero-node-main {
+  min-width: 128px;
+  min-height: 128px;
+  color: var(--foreground);
+  border-color: var(--accent);
+  box-shadow: 0 0 90px var(--accent-soft);
+}
+
+.project-card {
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  isolation: isolate;
+}
+
+.project-card-glow {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  background: radial-gradient(
+    600px circle at var(--mouse-x) var(--mouse-y),
+    var(--accent-soft),
+    transparent 40%
+  );
+}
+
+.project-card:hover .project-card-glow {
+  opacity: 1;
+}
+
+.service-row:hover {
+  background: linear-gradient(to right, transparent, var(--accent-soft), transparent);
+}
+
+.contact-panel {
+  background:
+    linear-gradient(125deg, var(--panel-strong), transparent),
+    radial-gradient(circle at 85% 10%, var(--accent-soft), transparent 34%),
+    var(--surface);
+}
+
+@media (max-width: 1023px) {
+  .hero-grid {
+    background-size: 48px 48px;
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
