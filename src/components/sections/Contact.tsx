@@ -40,7 +40,7 @@ export function Contact() {
               {/* Description */}
               <p className="mt-7 max-w-2xl text-base leading-7 text-(--muted) sm:text-lg">
                 Available for AI/RAG freelance projects, AI chatbot
-                integrations, full-stack builds and internship opportunities.
+                integrations, full-stack builds and opportunities.
               </p>
 
               {/* Buttons */}
@@ -78,14 +78,7 @@ export function Contact() {
                 </ButtonLink>
               </div>
 
-              {/* Developer Note */}
-              <p className="mt-6 text-xs text-(--muted)">
-                Replace the placeholder email and LinkedIn URL in{" "}
-                <code className="font-mono text-(--foreground)">
-                  src/lib/site.ts
-                </code>{" "}
-                before deployment.
-              </p>
+            
 
             </div>
           </div>

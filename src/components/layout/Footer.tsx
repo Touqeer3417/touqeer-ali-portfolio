@@ -8,7 +8,7 @@ export function Footer() {
     <footer className="border-t border-[var(--line)] py-8 sm:py-10">
       <Container className="flex flex-col gap-6 text-sm text-[var(--muted)] sm:flex-row sm:items-center sm:justify-between">
         <div>
-          © {new Date().getFullYear()} {siteConfig.name}. Built with Next.js, GSAP & Motion.
+          © {new Date().getFullYear()} {siteConfig.name}
         </div>
         <div className="flex flex-wrap items-center gap-5">
           <a href={siteConfig.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-[var(--foreground)]">
