@@ -1,7 +1,8 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useLayoutEffect, useRef } from "react";
-import { ArrowDown, Sparkles } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 
 import { GitHubIcon } from "@/components/icons/BrandIcons";
 import { Container } from "@/components/ui/Container";
@@ -12,13 +13,23 @@ import { TextReveal } from "@/components/animation/TextReveal";
 import { gsap } from "@/lib/gsap";
 import { siteConfig } from "@/lib/site";
 
-const nodes = [
-  { x: 46, y: 52, label: "LLM" },
-  { x: 23, y: 24, label: "RAG" },
-  { x: 77, y: 24, label: "TOOLS" },
-  { x: 81, y: 72, label: "API" },
-  { x: 19, y: 75, label: "DATA" },
-];
+const HeroThreeScene = dynamic(
+  () =>
+    import("@/components/three/HeroThreeScene").then(
+      (module) => module.HeroThreeScene,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="absolute inset-0 grid place-items-center"
+        aria-hidden="true"
+      >
+        <div className="h-36 w-36 rounded-full border border-(--line-strong) bg-(--accent-soft) shadow-[0_0_90px_var(--accent-soft)]" />
+      </div>
+    ),
+  },
+);
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
@@ -46,13 +57,30 @@ export function Hero() {
           delay: 0.75,
           stagger: 0.08,
           ease: "power3.out",
-        }
+        },
+      );
+
+      gsap.fromTo(
+        "[data-hero-visual]",
+        {
+          opacity: 0,
+          scale: 0.94,
+          rotateY: -5,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          rotateY: 0,
+          duration: 1.2,
+          delay: 0.45,
+          ease: "power3.out",
+        },
       );
 
       if (visual.current) {
         gsap.to(visual.current, {
-          yPercent: 12,
-          rotate: 1.8,
+          yPercent: 10,
+          rotate: 1.4,
           ease: "none",
           scrollTrigger: {
             trigger: root.current,
@@ -63,12 +91,13 @@ export function Hero() {
         });
       }
 
-      gsap.to("[data-orbit]", {
-        rotate: 360,
-        transformOrigin: "50% 50%",
-        duration: 22,
-        ease: "none",
+      gsap.to("[data-hero-halo]", {
+        scale: 1.08,
+        opacity: 0.9,
+        duration: 3.2,
         repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
       });
     }, root);
 
@@ -81,20 +110,23 @@ export function Hero() {
       id="top"
       className="relative min-h-screen overflow-hidden pt-28 sm:pt-32"
     >
-      {/* Background Grid */}
+      {/* Existing design-system backgrounds remain intact. */}
       <div className="hero-grid absolute inset-0 -z-20" />
-
-      {/* Background Vignette */}
       <div className="hero-vignette absolute inset-0 -z-10" />
 
-      <Container className="relative flex min-h-[calc(100vh-7rem)] flex-col justify-between pb-8 sm:pb-12">
-        <div className="grid flex-1 items-center gap-12 py-10 lg:grid-cols-[1.15fr_0.85fr] lg:py-16">
+      {/* Extra atmospheric halo; still driven by the existing accent token. */}
+      <div
+        data-hero-halo
+        className="pointer-events-none absolute right-[-12rem] top-[8%] -z-10 h-[34rem] w-[34rem] rounded-full bg-(--accent-soft) opacity-60 blur-[120px]"
+        aria-hidden="true"
+      />
 
+      <Container className="relative flex min-h-[calc(100vh-7rem)] flex-col justify-between pb-8 sm:pb-12">
+        <div className="grid flex-1 items-center gap-8 py-10 lg:grid-cols-[1.12fr_0.88fr] lg:gap-4 lg:py-16">
           {/* =========================
               LEFT CONTENT
           ========================== */}
-          <div className="max-w-5xl">
-
+          <div className="relative z-20 max-w-5xl">
             {/* Availability Badge */}
             <div
               data-hero-fade
@@ -102,7 +134,6 @@ export function Hero() {
             >
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--accent) opacity-50" />
-
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-(--accent)" />
               </span>
 
@@ -119,31 +150,21 @@ export function Hero() {
 
             {/* Main Heading */}
             <h1 className="max-w-245 text-[clamp(3.25rem,8.5vw,8.6rem)] font-semibold leading-[0.88] tracking-[-0.065em] text-(--foreground)">
-              <TextReveal
-                text="BUILDING"
-                delay={0.1}
-              />
+              <TextReveal text="BUILDING" delay={0.1} />
 
               <br />
 
               <span className="text-(--muted-strong)">
-                <TextReveal
-                  text="INTELLIGENT"
-                  delay={0.2}
-                />
+                <TextReveal text="INTELLIGENT" delay={0.2} />
               </span>
 
               <br />
 
-              <TextReveal
-                text="SYSTEMS."
-                delay={0.3}
-              />
+              <TextReveal text="SYSTEMS." delay={0.3} />
             </h1>
 
             {/* Description + Buttons */}
             <div className="mt-8 grid max-w-3xl gap-6 sm:grid-cols-[1fr_auto] sm:items-end">
-
               <p
                 data-hero-fade
                 className="max-w-2xl text-base leading-7 text-(--muted) sm:text-lg"
@@ -153,14 +174,9 @@ export function Hero() {
                 usable software.
               </p>
 
-              <div
-                data-hero-fade
-                className="flex flex-wrap gap-3"
-              >
+              <div data-hero-fade className="flex flex-wrap gap-3">
                 <MagneticButton>
-                  <ButtonLink href="#work">
-                    View my work
-                  </ButtonLink>
+                  <ButtonLink href="#work">View my work</ButtonLink>
                 </MagneticButton>
 
                 <MagneticButton>
@@ -175,10 +191,7 @@ export function Hero() {
                 </MagneticButton>
 
                 <MagneticButton>
-                  <ButtonLink
-                    href="#contact"
-                    variant="ghost"
-                  >
+                  <ButtonLink href="#contact" variant="ghost">
                     Hire me
                   </ButtonLink>
                 </MagneticButton>
@@ -203,72 +216,50 @@ export function Hero() {
           </div>
 
           {/* =========================
-              RIGHT AI VISUAL
+              RIGHT THREE.JS VISUAL
           ========================== */}
           <div
             ref={visual}
-            className="relative mx-auto hidden aspect-square w-full max-w-140 lg:block"
+            data-hero-visual
+            className="relative mx-auto min-h-[320px] w-full max-w-155 sm:min-h-[420px] lg:aspect-square lg:min-h-0"
+            style={{ perspective: "1200px" }}
           >
-            {/* Outer Background */}
-            <div className="absolute inset-[7%] rounded-full border border-(--line) bg-[radial-gradient(circle_at_50%_50%,rgba(117,245,181,0.07),transparent_62%)]" />
+            {/* WebGL frame */}
+            <div className="absolute inset-[2%] overflow-hidden rounded-[2.25rem] border border-(--line) bg-(--panel) shadow-[0_30px_120px_rgba(0,0,0,0.16)] backdrop-blur-sm">
+              <div
+                className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_45%,var(--accent-soft),transparent_38%)]"
+                aria-hidden="true"
+              />
 
-            {/* Rotating Orbit */}
+              <HeroThreeScene />
+
+              {/* Subtle scanline / glass treatment, no image assets required. */}
+              <div
+                className="pointer-events-none absolute inset-0 z-10 opacity-25 [background-image:linear-gradient(to_bottom,transparent_49%,var(--line)_50%,transparent_51%)] [background-size:100%_9px]"
+                aria-hidden="true"
+              />
+            </div>
+
+            {/* Structural rings connect the WebGL scene to the existing design language. */}
             <div
-              data-orbit
-              className="absolute inset-[14%] rounded-full border border-dashed border-(--line-strong) opacity-70"
+              className="pointer-events-none absolute inset-[9%] rounded-full border border-(--line)"
+              aria-hidden="true"
+            />
+            <div
+              className="pointer-events-none absolute inset-[17%] rounded-full border border-dashed border-(--line-strong) opacity-60"
+              aria-hidden="true"
             />
 
-            {/* Inner Circle */}
-            <div className="absolute inset-[25%] rounded-full border border-(--line) bg-(--panel) shadow-[0_0_100px_rgba(117,245,181,0.08)] backdrop-blur-xl" />
+            {/* HUD */}
+            <div className="pointer-events-none absolute inset-x-[6%] top-[6%] z-20 flex items-center justify-between gap-4 font-mono text-[9px] uppercase tracking-[0.18em] text-(--muted) sm:text-[10px]">
+              <span className="rounded-full border border-(--line) bg-(--nav) px-3 py-1.5 backdrop-blur">
+                Live system graph
+              </span>
 
-            {/* Connecting Lines */}
-            <svg
-              className="absolute inset-0 h-full w-full"
-              viewBox="0 0 100 100"
-              aria-hidden="true"
-            >
-              {nodes.slice(1).map((node, index) => (
-                <line
-                  key={index}
-                  x1="46"
-                  y1="52"
-                  x2={node.x}
-                  y2={node.y}
-                  stroke="currentColor"
-                  strokeWidth="0.22"
-                  className="text-(--line-strong)"
-                />
-              ))}
-            </svg>
+              <span className="hidden sm:inline">RAG · Agents · Tools · API</span>
+            </div>
 
-            {/* AI Nodes */}
-            {nodes.map((node, index) => (
-              <div
-                key={node.label}
-                className="absolute -translate-x-1/2 -translate-y-1/2"
-                style={{
-                  left: `${node.x}%`,
-                  top: `${node.y}%`,
-                }}
-              >
-                <div
-                  className={
-                    index === 0
-                      ? "hero-node hero-node-main"
-                      : "hero-node"
-                  }
-                >
-                  {index === 0 ? (
-                    <Sparkles className="mb-2 h-5 w-5" />
-                  ) : null}
-
-                  <span>{node.label}</span>
-                </div>
-              </div>
-            ))}
-
-            {/* Workflow Label */}
-            <div className="absolute bottom-[7%] left-1/2 -translate-x-1/2 rounded-full border border-(--line) bg-(--nav) px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-(--muted) backdrop-blur">
+            <div className="pointer-events-none absolute bottom-[7%] left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-(--line) bg-(--nav) px-4 py-2 font-mono text-[9px] uppercase tracking-[0.18em] text-(--muted) backdrop-blur sm:text-[10px]">
               Query → Retrieve → Reason → Act
             </div>
           </div>

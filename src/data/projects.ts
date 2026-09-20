@@ -59,6 +59,7 @@ export const projects: Project[] = [
       { label: "Backend", value: "FastAPI" },
     ],
   },
+
   {
     slug: "corrective-rag",
     index: "02",
@@ -116,54 +117,89 @@ export const projects: Project[] = [
       { label: "Vector DB", value: "Qdrant" },
     ],
   },
+
   {
     slug: "document-search-rag",
     index: "03",
     title: "Document Search RAG",
-    eyebrow: "Document AI · Semantic Search",
+    eyebrow: "Agentic RAG · Document Intelligence",
     summary:
-      "End-to-end document question answering with ingestion, chunking, embeddings, vector search and grounded LLM responses.",
+      "An intelligent document search system with hybrid retrieval, document grading, corrective query rewriting and grounded streamed answers.",
     description:
-      "A focused RAG application that turns uploaded documents into searchable knowledge and demonstrates the complete retrieval-to-generation pipeline.",
+      "A complete document intelligence application that retrieves relevant knowledge, evaluates retrieval quality and automatically corrects weak searches before generating a grounded response.",
     year: "2026",
     featured: true,
     image: "/projects/document-rag.svg",
-    stack: ["Python", "LangChain", "FAISS", "OpenAI", "Streamlit", "RAGAS"],
+
+    stack: [
+      "Python",
+      "LangChain",
+      "LangGraph",
+      "Qdrant",
+      "Hybrid Search",
+      "Reranking",
+      "Tavily",
+      "Streamlit",
+    ],
+
     links: [
+      {
+        label: "Live Demo",
+        href: "https://agentic-rag-knowledge-assistant.streamlit.app/",
+        type: "live",
+      },
       {
         label: "GitHub",
         href: "https://github.com/Touqeer3417/End-to-End-Rag-Docuemnt-Search-Project",
         type: "github",
       },
     ],
+
     problem:
-      "Long documents are difficult to search manually, and generic LLM answers are not trustworthy when they are not tied to the source material.",
+      "Traditional document search often depends on exact keywords, while basic RAG systems may answer confidently even when retrieved context is incomplete or irrelevant.",
+
     solution:
-      "Built a document ingestion and semantic retrieval flow using chunking, embeddings, FAISS vector search and context-constrained response generation.",
+      "Built an end-to-end corrective RAG pipeline with document ingestion, hybrid retrieval, relevance grading, query transformation, optional live web-search fallback and streamed answer generation.",
+
     outcome:
-      "Users can ask natural-language questions against their documents and receive answers based on retrieved passages rather than model memory alone.",
+      "The system can detect weak retrieval instead of blindly generating an answer, giving users a more resilient way to search and reason across indexed documents.",
+
     architecture: [
-      "Documents",
-      "Parsing",
-      "Chunking",
-      "Embeddings",
-      "FAISS",
-      "Retriever",
-      "LLM",
-      "Answer",
+      "User question",
+      "Hybrid retrieval",
+      "Document grading",
+      "Context quality check",
+      "Query rewrite",
+      "Web search fallback",
+      "Grounded generation",
+      "Streamed response",
     ],
+
     highlights: [
-      "End-to-end ingestion and retrieval pipeline",
-      "Semantic vector search",
-      "RAG evaluation workflow",
-      "Simple interactive Streamlit interface",
+      "Hybrid semantic + keyword retrieval",
+      "LLM-based relevance grading",
+      "Corrective query rewriting when retrieved context is weak",
+      "Tavily web-search fallback for missing local knowledge",
+      "LangGraph-controlled RAG workflow",
+      "Token-by-token Streamlit response streaming",
     ],
+
     metrics: [
-      { label: "Search", value: "Semantic" },
-      { label: "Vector store", value: "FAISS" },
-      { label: "Evaluation", value: "RAGAS" },
+      {
+        label: "Retrieval",
+        value: "Hybrid",
+      },
+      {
+        label: "Orchestration",
+        value: "LangGraph",
+      },
+      {
+        label: "Vector DB",
+        value: "Qdrant",
+      },
     ],
   },
+
   {
     slug: "business-ai-agent",
     index: "04",
@@ -176,7 +212,14 @@ export const projects: Project[] = [
     year: "2026",
     featured: false,
     image: "/projects/business-agent.svg",
-    stack: ["Next.js", "FastAPI", "LangGraph", "RAG", "PostgreSQL", "Webhooks"],
+    stack: [
+      "Next.js",
+      "FastAPI",
+      "LangGraph",
+      "RAG",
+      "PostgreSQL",
+      "Webhooks",
+    ],
     links: [],
     problem:
       "Many small businesses lose leads because website visitors cannot quickly get accurate answers or move into a clear booking or inquiry flow.",
@@ -200,13 +243,24 @@ export const projects: Project[] = [
       "Reusable multi-client architecture concept",
     ],
     metrics: [
-      { label: "Use case", value: "Lead + support" },
-      { label: "Frontend", value: "Next.js" },
-      { label: "Automation", value: "Webhooks" },
+      {
+        label: "Use case",
+        value: "Lead + support",
+      },
+      {
+        label: "Frontend",
+        value: "Next.js",
+      },
+      {
+        label: "Automation",
+        value: "Webhooks",
+      },
     ],
   },
 ];
 
 export function getProject(slug: string) {
-  return projects.find((project) => project.slug === slug);
+  return projects.find(
+    (project) => project.slug === slug
+  );
 }

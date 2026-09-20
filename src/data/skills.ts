@@ -1,4 +1,9 @@
-export const skillGroups = [
+export type SkillGroup = {
+  title: string;
+  items: string[];
+};
+
+export const skillGroups: SkillGroup[] = [
   {
     title: "AI / LLM",
     items: [
@@ -16,11 +21,25 @@ export const skillGroups = [
   },
   {
     title: "Retrieval",
-    items: ["Qdrant", "FAISS", "pgvector", "BM25", "Hybrid Search", "Reranking"],
+    items: [
+      "Qdrant",
+      "FAISS",
+      "pgvector",
+      "BM25",
+      "Hybrid Search",
+      "Reranking",
+    ],
   },
   {
     title: "Engineering",
-    items: ["TypeScript", "Python", "PostgreSQL", "Docker", "Git/GitHub", "REST APIs"],
+    items: [
+      "TypeScript",
+      "Python",
+      "PostgreSQL",
+      "Docker",
+      "Git/GitHub",
+      "REST APIs",
+    ],
   },
 ];
 
@@ -48,11 +67,5 @@ export const services = [
     title: "Full-Stack Web Applications",
     description:
       "Modern frontend + backend products using Next.js/React, FastAPI, PostgreSQL and production APIs.",
-  },
-  {
-    number: "05",
-    title: "Landing Pages",
-    description:
-      "Premium responsive landing pages with clear positioning, conversion-focused UX and tasteful motion.",
   },
 ];
