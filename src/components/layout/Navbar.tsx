@@ -40,16 +40,13 @@ export function Navbar() {
             aria-label={`${siteConfig.name} home`}
           >
             {/* Profile Image */}
-           <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-(--line-strong)">
-            <Image
-              src="/my_image/1706428239229.jpg"
-              alt={`${siteConfig.name} profile photo`}
-              fill
-              priority
-              sizes="48px"
-              className="object-cover"
-            />
-          </div>
+          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-(--line-strong)">
+  <img
+    src="/my_image/1706428239229.jpg"
+    alt={`${siteConfig.name} profile photo`}
+    className="h-full w-full object-cover"
+  />
+</div>
 
             {/* Name */}
             <span className="hidden text-sm font-semibold tracking-[-0.02em] text-(--foreground) sm:block">
