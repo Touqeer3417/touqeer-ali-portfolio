@@ -358,7 +358,7 @@ export default async function ProjectPage({
               group mb-8 inline-flex items-center gap-2
               rounded-full border border-(--line)
               bg-(--panel) px-4 py-2
-              text-xs font-medium text-(--muted)
+              text-xs font-medium text-(--body-copy)
               backdrop-blur-xl transition duration-300
               hover:border-(--line-strong)
               hover:text-(--foreground)
@@ -420,7 +420,7 @@ export default async function ProjectPage({
                       <span
                         className="
                           font-mono text-[10px] uppercase
-                          tracking-[0.18em] text-(--muted)
+                          tracking-[0.18em] text-(--body-copy)
                         "
                       >
                         {project.year}
@@ -442,7 +442,7 @@ export default async function ProjectPage({
                     <p
                       className="
                         mt-7 max-w-3xl text-base
-                        leading-8 text-(--muted)
+                        leading-8 text-(--body-copy)
                         sm:text-lg
                       "
                     >
@@ -457,7 +457,7 @@ export default async function ProjectPage({
                 >
                   <p
                     className="
-                      text-sm leading-7 text-(--muted)
+                      text-sm leading-7 text-(--body-copy)
                       sm:text-base
                     "
                   >
@@ -495,7 +495,7 @@ export default async function ProjectPage({
                         rounded-full border border-(--line)
                         bg-(--surface) px-3 py-2
                         font-mono text-[9px] uppercase
-                        tracking-[0.14em] text-(--muted)
+                        tracking-[0.14em] text-(--body-copy)
                       "
                     >
                       <span
@@ -547,7 +547,7 @@ export default async function ProjectPage({
                   <div
                     className="
                       font-mono text-[9px] uppercase
-                      tracking-[0.18em] text-(--muted)
+                      tracking-[0.18em] text-(--body-copy)
                     "
                   >
                     {item.label}
@@ -651,7 +651,7 @@ export default async function ProjectPage({
               <p
                 className="
                   max-w-2xl text-sm leading-7
-                  text-(--muted)
+                  text-(--body-copy)
                   sm:text-base lg:ml-auto
                 "
               >
@@ -718,7 +718,7 @@ export default async function ProjectPage({
                       See the complete workflow live
                     </div>
 
-                    <p className="mt-1 text-sm text-(--muted)">
+                    <p className="mt-1 text-sm text-(--body-copy)">
                       Open the deployed app and test the
                       document-search experience yourself.
                     </p>
@@ -805,7 +805,7 @@ export default async function ProjectPage({
               <p
                 className="
                   mt-5 max-w-md text-sm leading-7
-                  text-(--muted) sm:text-base
+                  text-(--body-copy) sm:text-base
                 "
               >
                 Each stage has one clear job: prepare the
@@ -876,7 +876,7 @@ export default async function ProjectPage({
             <p
               className="
                 max-w-2xl text-sm leading-7
-                text-(--muted)
+                text-(--body-copy)
                 sm:text-base lg:ml-auto
               "
             >
@@ -927,7 +927,7 @@ export default async function ProjectPage({
                         <p
                           className="
                             mt-3 text-sm leading-6
-                            text-(--muted)
+                            text-(--body-copy)
                           "
                         >
                           {DOCUMENT_HIGHLIGHT_DETAILS[highlight]}
@@ -974,7 +974,7 @@ export default async function ProjectPage({
                     <p
                       className="
                         mt-3 text-sm leading-6
-                        text-(--muted)
+                        text-(--body-copy)
                       "
                     >
                       Retrieved passages are supplied to the
@@ -1103,7 +1103,7 @@ export default async function ProjectPage({
                 <p
                   className="
                     max-w-2xl text-base leading-8
-                    text-(--muted)
+                    text-(--body-copy)
                   "
                 >
                   {project.outcome}
@@ -1159,7 +1159,7 @@ export default async function ProjectPage({
               <p
                 className="
                   mt-5 max-w-2xl text-sm leading-7
-                  text-(--muted) sm:text-base
+                  text-(--body-copy) sm:text-base
                 "
               >
                 The project moves beyond a basic chatbot by
@@ -1201,7 +1201,7 @@ export default async function ProjectPage({
                   <p
                     className="
                       mt-3 text-sm leading-6
-                      text-(--muted)
+                      text-(--body-copy)
                     "
                   >
                     {capability.text}
@@ -1263,7 +1263,7 @@ export default async function ProjectPage({
                         View source code
                       </div>
 
-                      <div className="mt-1 text-xs text-(--muted)">
+                      <div className="mt-1 text-xs text-(--body-copy)">
                         Inspect the project implementation
                       </div>
                     </div>
@@ -1334,7 +1334,7 @@ export default async function ProjectPage({
                 <p
                   className="
                     mt-5 max-w-2xl text-base
-                    leading-7 text-(--muted)
+                    leading-7 text-(--body-copy)
                   "
                 >
                   {isDocumentRag
@@ -1444,7 +1444,7 @@ function StoryCard({
             <Icon className="h-4 w-4 text-(--accent)" />
           </div>
 
-          <span className="font-mono text-[10px] text-(--muted)">
+          <span className="font-mono text-[10px] text-(--body-copy)">
             {number}
           </span>
         </div>
@@ -1471,7 +1471,7 @@ function StoryCard({
         <p
           className="
             mt-4 max-w-xl text-sm leading-7
-            text-(--muted) sm:text-[15px]
+            text-(--body-copy) sm:text-[15px]
           "
         >
           {text}
@@ -1535,7 +1535,7 @@ function ScreenshotCard({
         <span
           className="
             font-mono text-[9px] uppercase
-            tracking-[0.18em] text-(--muted)
+            tracking-[0.18em] text-(--body-copy)
           "
         >
           {index}
@@ -1575,7 +1575,7 @@ function ArchitectureStep({
 
         <ArrowRight
           className="
-            h-4 w-4 text-(--muted)
+            h-4 w-4 text-(--body-copy)
             transition-transform group-hover:translate-x-1
           "
         />
@@ -1591,7 +1591,7 @@ function ArchitectureStep({
       </h3>
 
       {description && (
-        <p className="mt-2 text-sm leading-6 text-(--muted)">
+        <p className="mt-2 text-sm leading-6 text-(--body-copy)">
           {description}
         </p>
       )}
@@ -1633,7 +1633,7 @@ function TechGroup({
       <div
         className="
           mt-6 font-mono text-[9px] uppercase
-          tracking-[0.18em] text-(--muted)
+          tracking-[0.18em] text-(--body-copy)
         "
       >
         {title}
@@ -1724,7 +1724,7 @@ function ProjectLinkCard({
             {title}
           </div>
 
-          <div className="mt-1 text-xs text-(--muted)">
+          <div className="mt-1 text-xs text-(--body-copy)">
             {subtitle}
           </div>
         </div>

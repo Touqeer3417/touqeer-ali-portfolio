@@ -78,7 +78,7 @@ export function Experience() {
                       aria-hidden="true"
                     />
 
-                    <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--muted)]">
+                    <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--body-copy)]">
                       {item.period}
                     </div>
 
@@ -91,7 +91,7 @@ export function Experience() {
                         {item.organization}
                       </div>
 
-                      <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                      <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--body-copy)]">
                         {item.description}
                       </p>
                     </div>
@@ -113,7 +113,7 @@ export function Experience() {
                     key={item}
                     className="flex items-center gap-4 border-b border-[var(--line)] pb-5 last:border-b-0 last:pb-0"
                   >
-                    <span className="font-mono text-[10px] text-[var(--muted)]">
+                    <span className="font-mono text-[10px] text-[var(--body-copy)]">
                       0{index + 1}
                     </span>
 

@@ -31,6 +31,7 @@ export function About() {
               eyebrow="About"
               title="AI engineering with a product mindset."
               description="I’m building toward a career in AI engineering, with a practical focus on RAG, agentic systems and full-stack products that solve real operational problems."
+              descriptionClassName="font-medium text-[var(--body-copy)]"
             />
           </FadeIn>
 
@@ -42,7 +43,7 @@ export function About() {
                     <card.icon className="h-5 w-5" />
                   </div>
                   <h3 className="text-lg font-semibold tracking-[-0.02em] text-[var(--foreground)]">{card.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{card.text}</p>
+                  <p className="mt-3 text-sm leading-6 text-[var(--body-copy)]">{card.text}</p>
                 </article>
               </FadeIn>
             ))}

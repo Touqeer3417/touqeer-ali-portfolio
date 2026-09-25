@@ -170,7 +170,7 @@ export function Hero() {
             {/* Availability Badge */}
             <div
               data-hero-fade
-              className="mb-7 inline-flex items-center gap-2 rounded-full border border-(--line) bg-(--panel) px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-(--muted) backdrop-blur"
+              className="mb-7 inline-flex items-center gap-2 rounded-full border border-(--line) bg-(--panel) px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-(--body-copy) backdrop-blur"
             >
               <span className="relative flex h-2 w-2">
                 <span
@@ -185,7 +185,7 @@ export function Hero() {
             {/* Name + Role */}
             <p
               data-hero-fade
-              className="mb-4 font-mono text-xs uppercase tracking-[0.22em] text-(--muted)"
+              className="mb-4 font-mono text-xs uppercase tracking-[0.22em] text-(--body-copy)"
             >
               {siteConfig.name} · {siteConfig.role}
             </p>
@@ -209,7 +209,7 @@ export function Hero() {
             <div className="mt-8 grid max-w-3xl gap-6 sm:grid-cols-[1fr_auto] sm:items-end">
               <p
                 data-hero-fade
-                className="max-w-2xl text-base leading-7 text-(--muted) sm:text-lg"
+                className="max-w-2xl text-base font-medium leading-7 text-(--body-copy) sm:text-lg"
               >
                 I build AI agents, RAG systems, business automation and
                 polished full-stack products that move from prototype to
@@ -243,7 +243,7 @@ export function Hero() {
             {/* Technologies */}
             <div
               data-hero-fade
-              className="mt-8 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.16em] text-(--muted)"
+              className="mt-8 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.16em] text-(--body-copy)"
             >
               <span>RAG</span>
               <span>•</span>
@@ -295,7 +295,7 @@ export function Hero() {
             />
 
             {/* HUD */}
-            <div className="pointer-events-none absolute inset-x-[6%] top-[6%] z-20 flex items-center justify-between gap-4 font-mono text-[9px] uppercase tracking-[0.18em] text-(--muted) sm:text-[10px]">
+            <div className="pointer-events-none absolute inset-x-[6%] top-[6%] z-20 flex items-center justify-between gap-4 font-mono text-[9px] uppercase tracking-[0.18em] text-(--body-copy) sm:text-[10px]">
               <span className="rounded-full border border-(--line) bg-(--nav) px-3 py-1.5 backdrop-blur">
                 Live system graph
               </span>
@@ -306,7 +306,7 @@ export function Hero() {
             </div>
 
             {/* Bottom HUD */}
-            <div className="pointer-events-none absolute bottom-[7%] left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-(--line) bg-(--nav) px-4 py-2 font-mono text-[9px] uppercase tracking-[0.18em] text-(--muted) backdrop-blur sm:text-[10px]">
+            <div className="pointer-events-none absolute bottom-[7%] left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-(--line) bg-(--nav) px-4 py-2 font-mono text-[9px] uppercase tracking-[0.18em] text-(--body-copy) backdrop-blur sm:text-[10px]">
               Query → Retrieve → Reason → Act
             </div>
           </div>
@@ -317,7 +317,7 @@ export function Hero() {
         ====================================== */}
         <div
           data-hero-fade
-          className="flex items-center justify-between border-t border-(--line) pt-5 text-xs text-(--muted)"
+          className="flex items-center justify-between border-t border-(--line) pt-5 text-xs text-(--body-copy)"
         >
           <span className="font-mono uppercase tracking-[0.18em]">
             Scroll to explore

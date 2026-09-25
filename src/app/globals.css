@@ -3,6 +3,7 @@
 :root {
   --background: #f4f5f1;
   --foreground: #0c1111;
+  --body-copy: #3f4946;
   --muted: #626b68;
   --muted-strong: #777f7d;
   --surface: #eceee9;
@@ -18,6 +19,7 @@
 .dark {
   --background: #080b0d;
   --foreground: #eef4ef;
+  --body-copy: #bdc8c1;
   --muted: #89938f;
   --muted-strong: #66716d;
   --surface: #0d1214;

@@ -36,7 +36,7 @@ export function Services() {
                     {service.title}
                   </h3>
 
-                  <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)] sm:text-base">
+                  <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--body-copy)] sm:text-base">
                     {service.description}
                   </p>
                 </div>

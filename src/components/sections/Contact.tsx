@@ -38,7 +38,7 @@ export function Contact() {
               </h2>
 
               {/* Description */}
-              <p className="mt-7 max-w-2xl text-base leading-7 text-(--muted) sm:text-lg">
+              <p className="mt-7 max-w-2xl font-medium text-base leading-7 text-(--body-copy) sm:text-lg">
                 Available for AI/RAG freelance projects, AI chatbot
                 integrations, full-stack builds and opportunities.
               </p>

@@ -63,7 +63,7 @@ export function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-full px-4 py-2 text-sm text-(--muted) transition hover:bg-(--panel) hover:text-(--foreground)"
+                className="rounded-full px-4 py-2 text-sm text-(--body-copy) transition hover:bg-(--panel) hover:text-(--foreground)"
               >
                 {item.label}
               </Link>

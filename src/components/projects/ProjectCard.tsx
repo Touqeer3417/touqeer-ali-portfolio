@@ -160,7 +160,7 @@ export function ProjectCard({ project }: { project: Project }) {
               {project.title}
             </h3>
 
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-[var(--muted)] sm:text-base sm:leading-7">
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-[var(--body-copy)] sm:text-base sm:leading-7">
               {project.summary}
             </p>
 
