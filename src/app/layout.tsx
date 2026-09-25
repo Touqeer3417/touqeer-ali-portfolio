@@ -19,15 +19,19 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+
   title: {
     default: `${siteConfig.name} — AI Engineer`,
     template: `%s — ${siteConfig.name}`,
   },
+
   description: siteConfig.description,
+
   keywords: [
     "Touqeer Ali",
     "AI Engineer",
@@ -38,8 +42,17 @@ export const metadata: Metadata = {
     "FastAPI",
     "Next.js",
   ],
+
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
+
+  // FAVICON
+  icons: {
+    icon: "/my_image/1706428239229.jpg",
+    shortcut: "/my_image/1706428239229.jpg",
+    apple: "/my_image/1706428239229.jpg",
+  },
+
   openGraph: {
     type: "website",
     title: `${siteConfig.name} — AI Engineer`,
@@ -47,6 +60,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName: siteConfig.name,
   },
+
   twitter: {
     card: "summary_large_image",
     title: `${siteConfig.name} — AI Engineer`,
@@ -58,18 +72,32 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#080b0d" },
-    { media: "(prefers-color-scheme: light)", color: "#f4f5f1" },
+    {
+      media: "(prefers-color-scheme: dark)",
+      color: "#080b0d",
+    },
+    {
+      media: "(prefers-color-scheme: light)",
+      color: "#f4f5f1",
+    },
   ],
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geist.variable} ${geistMono.variable}`}>
         <Providers>
           <Navbar />
-          <main><PageTransition>{children}</PageTransition></main>
+
+          <main>
+            <PageTransition>{children}</PageTransition>
+          </main>
+
           <Footer />
         </Providers>
       </body>

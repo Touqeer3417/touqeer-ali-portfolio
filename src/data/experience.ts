@@ -2,7 +2,7 @@ export const experience = [
   {
     period: "2025 — Present",
     title: "AI Engineering Projects",
-    organization: "Independent / University",
+    organization: "University",
     description:
       "Building RAG, corrective retrieval, AI agents and full-stack AI products with an emphasis on reliable retrieval and practical automation.",
   },

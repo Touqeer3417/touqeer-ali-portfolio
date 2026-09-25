@@ -9,7 +9,6 @@ import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { MagneticButton } from "@/components/animation/MagneticButton";
 import { TextReveal } from "@/components/animation/TextReveal";
-
 import { gsap } from "@/lib/gsap";
 import { siteConfig } from "@/lib/site";
 
@@ -43,8 +42,37 @@ export function Hero() {
       return;
     }
 
+    const mm = gsap.matchMedia();
+
     const ctx = gsap.context(() => {
-      gsap.fromTo(
+      // -----------------------------------------
+      // HERO INTRO
+      // -----------------------------------------
+      const intro = gsap.timeline({
+        defaults: {
+          ease: "power3.out",
+        },
+      });
+
+      // Three.js visual entrance
+      intro.fromTo(
+        "[data-hero-visual]",
+        {
+          opacity: 0,
+          scale: 0.96,
+          rotateY: -4,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          rotateY: 0,
+          duration: 1.05,
+        },
+        0.05,
+      );
+
+      // Text / metadata / CTA entrance
+      intro.fromTo(
         "[data-hero-fade]",
         {
           opacity: 0,
@@ -53,55 +81,66 @@ export function Hero() {
         {
           opacity: 1,
           y: 0,
-          duration: 0.9,
-          delay: 0.75,
-          stagger: 0.08,
-          ease: "power3.out",
+          duration: 0.76,
+          stagger: 0.07,
+        },
+        0.38,
+      );
+
+      // -----------------------------------------
+      // DESKTOP PARALLAX
+      // -----------------------------------------
+      mm.add(
+        "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          if (!visual.current || !root.current) {
+            return;
+          }
+
+          gsap.to(visual.current, {
+            yPercent: 9,
+            rotate: 1.1,
+            scale: 0.992,
+            ease: "none",
+            scrollTrigger: {
+              trigger: root.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: 0.9,
+            },
+          });
         },
       );
 
-      gsap.fromTo(
-        "[data-hero-visual]",
-        {
-          opacity: 0,
-          scale: 0.94,
-          rotateY: -5,
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          rotateY: 0,
-          duration: 1.2,
-          delay: 0.45,
-          ease: "power3.out",
+      // -----------------------------------------
+      // TABLET + MOBILE PARALLAX
+      // -----------------------------------------
+      mm.add(
+        "(max-width: 1023px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          if (!visual.current || !root.current) {
+            return;
+          }
+
+          gsap.to(visual.current, {
+            yPercent: 4,
+            rotate: 0.4,
+            ease: "none",
+            scrollTrigger: {
+              trigger: root.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: 0.7,
+            },
+          });
         },
       );
-
-      if (visual.current) {
-        gsap.to(visual.current, {
-          yPercent: 10,
-          rotate: 1.4,
-          ease: "none",
-          scrollTrigger: {
-            trigger: root.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1,
-          },
-        });
-      }
-
-      gsap.to("[data-hero-halo]", {
-        scale: 1.08,
-        opacity: 0.9,
-        duration: 3.2,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
     }, root);
 
-    return () => ctx.revert();
+    return () => {
+      mm.revert();
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -110,22 +149,23 @@ export function Hero() {
       id="top"
       className="relative min-h-screen overflow-hidden pt-28 sm:pt-32"
     >
-      {/* Existing design-system backgrounds remain intact. */}
+      {/* -----------------------------------------
+          BACKGROUND
+      ------------------------------------------ */}
       <div className="hero-grid absolute inset-0 -z-20" />
       <div className="hero-vignette absolute inset-0 -z-10" />
 
-      {/* Extra atmospheric halo; still driven by the existing accent token. */}
+      {/* Static atmospheric halo */}
       <div
-        data-hero-halo
         className="pointer-events-none absolute right-[-12rem] top-[8%] -z-10 h-[34rem] w-[34rem] rounded-full bg-(--accent-soft) opacity-60 blur-[120px]"
         aria-hidden="true"
       />
 
       <Container className="relative flex min-h-[calc(100vh-7rem)] flex-col justify-between pb-8 sm:pb-12">
         <div className="grid flex-1 items-center gap-8 py-10 lg:grid-cols-[1.12fr_0.88fr] lg:gap-4 lg:py-16">
-          {/* =========================
+          {/* =====================================
               LEFT CONTENT
-          ========================== */}
+          ====================================== */}
           <div className="relative z-20 max-w-5xl">
             {/* Availability Badge */}
             <div
@@ -133,14 +173,16 @@ export function Hero() {
               className="mb-7 inline-flex items-center gap-2 rounded-full border border-(--line) bg-(--panel) px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-(--muted) backdrop-blur"
             >
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--accent) opacity-50" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-(--accent)" />
+                <span
+                  className="relative inline-flex h-2 w-2 rounded-full bg-(--accent)"
+                  aria-hidden="true"
+                />
               </span>
 
               {siteConfig.availability}
             </div>
 
-            {/* Name */}
+            {/* Name + Role */}
             <p
               data-hero-fade
               className="mb-4 font-mono text-xs uppercase tracking-[0.22em] text-(--muted)"
@@ -215,9 +257,9 @@ export function Hero() {
             </div>
           </div>
 
-          {/* =========================
+          {/* =====================================
               RIGHT THREE.JS VISUAL
-          ========================== */}
+          ====================================== */}
           <div
             ref={visual}
             data-hero-visual
@@ -226,6 +268,7 @@ export function Hero() {
           >
             {/* WebGL frame */}
             <div className="absolute inset-[2%] overflow-hidden rounded-[2.25rem] border border-(--line) bg-(--panel) shadow-[0_30px_120px_rgba(0,0,0,0.16)] backdrop-blur-sm">
+              {/* Accent glow */}
               <div
                 className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_45%,var(--accent-soft),transparent_38%)]"
                 aria-hidden="true"
@@ -233,18 +276,19 @@ export function Hero() {
 
               <HeroThreeScene />
 
-              {/* Subtle scanline / glass treatment, no image assets required. */}
+              {/* Scanline treatment */}
               <div
                 className="pointer-events-none absolute inset-0 z-10 opacity-25 [background-image:linear-gradient(to_bottom,transparent_49%,var(--line)_50%,transparent_51%)] [background-size:100%_9px]"
                 aria-hidden="true"
               />
             </div>
 
-            {/* Structural rings connect the WebGL scene to the existing design language. */}
+            {/* Structural rings */}
             <div
               className="pointer-events-none absolute inset-[9%] rounded-full border border-(--line)"
               aria-hidden="true"
             />
+
             <div
               className="pointer-events-none absolute inset-[17%] rounded-full border border-dashed border-(--line-strong) opacity-60"
               aria-hidden="true"
@@ -256,18 +300,21 @@ export function Hero() {
                 Live system graph
               </span>
 
-              <span className="hidden sm:inline">RAG · Agents · Tools · API</span>
+              <span className="hidden sm:inline">
+                RAG · Agents · Tools · API
+              </span>
             </div>
 
+            {/* Bottom HUD */}
             <div className="pointer-events-none absolute bottom-[7%] left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-(--line) bg-(--nav) px-4 py-2 font-mono text-[9px] uppercase tracking-[0.18em] text-(--muted) backdrop-blur sm:text-[10px]">
               Query → Retrieve → Reason → Act
             </div>
           </div>
         </div>
 
-        {/* =========================
+        {/* =====================================
             SCROLL INDICATOR
-        ========================== */}
+        ====================================== */}
         <div
           data-hero-fade
           className="flex items-center justify-between border-t border-(--line) pt-5 text-xs text-(--muted)"
@@ -276,7 +323,10 @@ export function Hero() {
             Scroll to explore
           </span>
 
-          <ArrowDown className="h-4 w-4 animate-bounce" />
+          <ArrowDown
+            className="h-4 w-4 transition-transform duration-300 hover:translate-y-1"
+            aria-hidden="true"
+          />
         </div>
       </Container>
     </section>
