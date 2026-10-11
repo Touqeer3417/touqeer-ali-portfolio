@@ -82,13 +82,19 @@ export const projects: Project[] = [
       "React",
       "Docker",
     ],
-    links: [
-      {
-        label: "GitHub",
-        href: "https://github.com/Touqeer3417/corrective-rag-",
-        type: "github",
-      },
-    ],
+    
+links: [
+  {
+    label: "Live Demo",
+    href: "https://corrective-rag-plum.vercel.app/",
+    type: "live",
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/Touqeer3417/corrective-rag-",
+    type: "github",
+  },
+],
     problem:
       "Conventional RAG can produce confident but poorly grounded answers when retrieval returns irrelevant documents or misses the right evidence.",
     solution:
