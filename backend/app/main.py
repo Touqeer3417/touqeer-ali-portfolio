@@ -1,4 +1,6 @@
+
 import hmac
+import logging
 from typing import Literal
 
 from fastapi import FastAPI, Header, HTTPException, Request
@@ -12,46 +14,91 @@ from app.config import settings
 from app.rag import stream_answer
 
 
+logger = logging.getLogger("portfolio_api")
+
+
 def client_key(request: Request) -> str:
-    # The Next.js proxy forwards the real visitor IP. Safe to trust: /chat also needs the shared secret.
-    return request.headers.get("x-client-ip") or get_remote_address(request)
+    """Identify visitors for rate limiting."""
+    return (
+        request.headers.get("x-client-ip")
+        or get_remote_address(request)
+    )
 
 
 limiter = Limiter(key_func=client_key)
-app = FastAPI(title="Portfolio RAG API")
+
+app = FastAPI(
+    title="Touqeer Ali Portfolio RAG API",
+    version="3.0.0",
+)
+
 app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+app.add_exception_handler(
+    RateLimitExceeded,
+    _rate_limit_exceeded_handler,
+)
 
 
-class Msg(BaseModel):
+class Message(BaseModel):
     role: Literal["user", "assistant"]
-    content: str = Field(min_length=1, max_length=2000)
+    content: str = Field(min_length=1, max_length=500)
 
 
 class ChatRequest(BaseModel):
-    messages: list[Msg] = Field(min_length=1, max_length=12)
+    messages: list[Message] = Field(
+        min_length=1,
+        max_length=12,
+    )
 
 
 @app.get("/health")
-def health():
-    return {"status": "ok"}
+def health() -> dict[str, str]:
+    """Check whether the backend API is running."""
+    return {
+        "status": "ok",
+        "service": "portfolio-rag-api",
+    }
 
 
 @app.post("/chat")
 @limiter.limit("10/minute;80/day")
-def chat(request: Request, body: ChatRequest, x_api_key: str = Header(default="")):
-    if settings.shared_secret and not hmac.compare_digest(
-        x_api_key.encode(), settings.shared_secret.encode()
+def chat(
+    request: Request,
+    body: ChatRequest,
+    x_api_key: str = Header(default=""),
+) -> StreamingResponse:
+    """Authenticate the request and stream the RAG response."""
+
+    # 1. Verify shared secret.
+    if not hmac.compare_digest(
+        x_api_key.encode("utf-8"),
+        settings.shared_secret.encode("utf-8"),
     ):
-        raise HTTPException(status_code=401, detail="unauthorized")
+        raise HTTPException(
+            status_code=401,
+            detail="Unauthorized",
+        )
 
-    last = body.messages[-1]
-    if last.role != "user":
-        raise HTTPException(status_code=400, detail="last message must be from user")
-    if len(last.content) > 500:
-        raise HTTPException(status_code=400, detail="message too long (max 500 chars)")
+    # 2. Last message must be from the visitor.
+    if body.messages[-1].role != "user":
+        raise HTTPException(
+            status_code=400,
+            detail="Last message must be from user",
+        )
 
-    messages = [m.model_dump() for m in body.messages]
+    # 3. Convert Pydantic models into dictionaries.
+    messages = [
+        message.model_dump()
+        for message in body.messages
+    ]
+
+    # 4. Stream the LangChain RAG response.
     return StreamingResponse(
-        stream_answer(messages), media_type="text/plain; charset=utf-8"
+        stream_answer(messages),
+        media_type="text/plain; charset=utf-8",
+        headers={
+            "Cache-Control": "no-cache, no-transform",
+            "X-Accel-Buffering": "no",
+        },
     )

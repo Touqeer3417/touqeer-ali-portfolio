@@ -1,45 +1,85 @@
-﻿"""Build the vector index from knowledge/*.md."""
+﻿
+"""Build a separate dense + BM25 hybrid index in Qdrant."""
 
 import re
 from pathlib import Path
 
+from qdrant_client import models
 from qdrant_client.models import Distance, PointStruct, VectorParams
 
 from app.config import settings
-from app.rag import embed, qdrant
+from app.providers import embed_documents
+from app.rag import qdrant
+
 
 KB_DIR = Path(__file__).resolve().parent.parent / "knowledge"
 MAX_CHARS = 1100
 
 
 def clean(text: str) -> str:
+    """Remove HTML comments and surrounding whitespace."""
     return re.sub(r"<!--.*?-->", "", text, flags=re.S).strip()
 
 
 def pack(section: str) -> list[str]:
+    """Split a section into chunks without exceeding MAX_CHARS."""
     if len(section) <= MAX_CHARS:
         return [section]
 
-    out, buf = [], ""
+    chunks: list[str] = []
+    buffer = ""
 
-    for para in section.split("\n\n"):
-        if buf and len(buf) + len(para) > MAX_CHARS:
-            out.append(buf.strip())
-            buf = ""
+    for paragraph in section.split("\n\n"):
+        paragraph = paragraph.strip()
 
-        buf += para + "\n\n"
+        if not paragraph:
+            continue
 
-    if buf.strip():
-        out.append(buf.strip())
+        # Split unusually long paragraphs into smaller pieces.
+        if len(paragraph) > MAX_CHARS:
+            if buffer:
+                chunks.append(buffer.strip())
+                buffer = ""
 
-    return out
+            sentences = re.split(r"(?<=[.!?])\s+", paragraph)
+            for sentence in sentences:
+                if len(sentence) <= MAX_CHARS:
+                    if buffer and len(buffer) + len(sentence) + 1 > MAX_CHARS:
+                        chunks.append(buffer.strip())
+                        buffer = ""
+                    buffer += sentence + " "
+                else:
+                    if buffer:
+                        chunks.append(buffer.strip())
+                        buffer = ""
+
+                    # Hard split only when a single sentence is too long.
+                    for start in range(0, len(sentence), MAX_CHARS):
+                        chunks.append(sentence[start:start + MAX_CHARS])
+
+            continue
+
+        if buffer and len(buffer) + len(paragraph) + 2 > MAX_CHARS:
+            chunks.append(buffer.strip())
+            buffer = ""
+
+        buffer += paragraph + "\n\n"
+
+    if buffer.strip():
+        chunks.append(buffer.strip())
+
+    return chunks
 
 
 def chunk_file(path: Path) -> list[str]:
+    """Create heading-aware chunks from a Markdown file."""
     text = clean(path.read_text(encoding="utf-8"))
-    title = text.splitlines()[0].lstrip("# ").strip()
 
-    chunks = []
+    if not text:
+        return []
+
+    title = text.splitlines()[0].lstrip("# ").strip()
+    chunks: list[str] = []
 
     for section in re.split(r"\n(?=## )", text):
         for piece in pack(section.strip()):
@@ -60,51 +100,94 @@ def main() -> None:
     if not files:
         raise RuntimeError("No Markdown knowledge files found.")
 
-    chunks = [
-        {"text": chunk, "source": file.name}
-        for file in files
-        for chunk in chunk_file(file)
-    ]
+    # Prepare documents with source and chunk metadata.
+    chunks: list[dict] = []
+
+    for file in files:
+        file_chunks = chunk_file(file)
+
+        for index, chunk in enumerate(file_chunks):
+            chunks.append(
+                {
+                    "text": chunk,
+                    "source": file.name,
+                    "chunk_index": index,
+                    "total_chunks": len(file_chunks),
+                }
+            )
 
     if not chunks:
-        raise RuntimeError("No text chunks generated from knowledge files.")
+        raise RuntimeError("No text chunks generated.")
 
-    print(f"Generating embeddings for {len(chunks)} chunks from {len(files)} files...")
+    print(
+        f"Generating embeddings for {len(chunks)} chunks "
+        f"from {len(files)} files..."
+    )
 
-    vectors = embed([chunk["text"] for chunk in chunks])
+    # Generate dense vectors through LangChain.
+    vectors = embed_documents([chunk["text"] for chunk in chunks])
 
     if len(vectors) != len(chunks):
         raise RuntimeError("Embedding count does not match chunk count.")
 
+    if not vectors or not vectors[0]:
+        raise RuntimeError("No valid embeddings generated.")
+
     client = qdrant()
 
-    if client.collection_exists(settings.collection):
-        print("Deleting existing collection...")
-        client.delete_collection(settings.collection)
+    # Only rebuild our dedicated hybrid collection.
+    # The original portfolio_kb collection remains untouched.
+    if client.collection_exists(settings.hybrid_collection):
+        print("Replacing existing hybrid collection...")
+        client.delete_collection(settings.hybrid_collection)
+
+    print("Creating hybrid collection...")
 
     client.create_collection(
-        collection_name=settings.collection,
+        collection_name=settings.hybrid_collection,
         vectors_config=VectorParams(
             size=len(vectors[0]),
             distance=Distance.COSINE,
         ),
     )
 
+    # Enable genuine BM25 scoring on the stored text payload.
+    print("Creating BM25 full-text index...")
+
+    client.create_payload_index(
+        collection_name=settings.hybrid_collection,
+        field_name="text",
+        field_schema=models.TextIndexParams(
+            type=models.TextIndexType.TEXT,
+            scoring=True,
+        ),
+        wait=True,
+    )
+
+    print("Uploading documents and dense embeddings...")
+
     client.upsert(
-        collection_name=settings.collection,
+        collection_name=settings.hybrid_collection,
         wait=True,
         points=[
             PointStruct(
-                id=i,
+                id=index,
                 vector=vector,
                 payload=chunk,
             )
-            for i, (vector, chunk) in enumerate(zip(vectors, chunks))
+            for index, (vector, chunk) in enumerate(
+                zip(vectors, chunks)
+            )
         ],
     )
 
-    print(f"Success! Indexed {len(chunks)} chunks from {len(files)} files.")
-    print("Collection:", settings.collection)
+    print("\nHybrid indexing successful!")
+    print(f"Documents: {len(chunks)} chunks")
+    print(f"Source files: {len(files)}")
+    print(f"Collection: {settings.hybrid_collection}")
+    print("Dense search: Enabled")
+    print("BM25 full-text search: Enabled")
+    print("RRF: Ready")
 
 
 if __name__ == "__main__":

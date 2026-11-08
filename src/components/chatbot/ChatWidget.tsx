@@ -90,7 +90,7 @@ export default function ChatWidget() {
   }
 
   return (
-    <div className="fixed bottom-4 left-4 z-[60] sm:bottom-6 sm:left-6">
+      <div className="fixed bottom-4 right-4 z-[60] sm:bottom-6 sm:right-6">
       <AnimatePresence>
         {open && (
           <motion.div
@@ -98,7 +98,7 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute bottom-16 left-0 flex h-[min(70vh,540px)] w-[min(calc(100vw-2rem),380px)] origin-bottom-left flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a12]/90 shadow-[0_0_60px_-12px_rgba(124,58,237,0.5)] backdrop-blur-xl"
+            className="absolute bottom-16 right-0 flex h-[min(70vh,540px)] w-[min(calc(100vw-2rem),380px)] origin-bottom-right flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a12]/90 shadow-[0_0_60px_-12px_rgba(124,58,237,0.5)] backdrop-blur-xl"
           >
             {/* header */}
             <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">

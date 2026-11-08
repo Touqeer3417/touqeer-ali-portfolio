@@ -6,7 +6,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { PageTransition } from "@/components/animation/PageTransition";
 import { siteConfig } from "@/lib/site";
-
+import ChatWidget from "@/components/chatbot/ChatWidget";
 const geist = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -99,6 +99,8 @@ export default function RootLayout({
           </main>
 
           <Footer />
+            <ChatWidget />
+
         </Providers>
       </body>
     </html>
