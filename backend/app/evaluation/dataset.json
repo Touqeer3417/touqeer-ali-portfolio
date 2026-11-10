@@ -1,0 +1,116 @@
+[
+  {
+    "id": "background_01",
+    "user_input": "What is Touqeer studying, and at which university?",
+    "reference": "Touqeer Ali is studying BS Software Engineering at NUML University.",
+    "source_files": ["about.md"]
+  },
+  {
+    "id": "background_02",
+    "user_input": "How does Touqeer describe his professional focus?",
+    "reference": "Touqeer is an aspiring AI / RAG engineer, full-stack developer and freelancer. He builds production-focused RAG systems, AI agents and intelligent web applications.",
+    "source_files": ["about.md"]
+  },
+  {
+    "id": "background_03",
+    "user_input": "Which AI areas does Touqeer mainly work on?",
+    "reference": "His main areas are retrieval-augmented generation (RAG), agentic AI and LLM applications.",
+    "source_files": ["about.md"]
+  },
+  {
+    "id": "background_04",
+    "user_input": "What opportunities is Touqeer currently looking for?",
+    "reference": "He is looking for AI/ML internships and freelance clients through Upwork, Fiverr, Toptal and direct clients.",
+    "source_files": ["about.md"]
+  },
+  {
+    "id": "background_05",
+    "user_input": "Which languages can Touqeer communicate in?",
+    "reference": "Touqeer communicates in English and Urdu.",
+    "source_files": ["about.md"]
+  },
+  {
+    "id": "skills_01",
+    "user_input": "Name Touqeer's AI and RAG skills, including the vector databases he has used.",
+    "reference": "His AI and RAG skills include RAG pipelines, hybrid search, semantic chunking, reranking, agentic RAG, LangChain, LangGraph and RAGAS evaluation. He has used FAISS, Qdrant and pgvector.",
+    "source_files": ["skills.md"]
+  },
+  {
+    "id": "skills_02",
+    "user_input": "Which frontend frameworks and languages are in Touqeer's tech stack?",
+    "reference": "His frontend stack includes React 19, Next.js, Vite, TypeScript and Tailwind CSS. It also includes Framer Motion, GSAP and Lucide React.",
+    "source_files": ["skills.md"]
+  },
+  {
+    "id": "skills_03",
+    "user_input": "What backend and database technologies does Touqeer list?",
+    "reference": "Touqeer lists Python, FastAPI, REST APIs and PostgreSQL as backend technologies.",
+    "source_files": ["skills.md"]
+  },
+  {
+    "id": "skills_04",
+    "user_input": "What tools does Touqeer use for DevOps and deployment?",
+    "reference": "His DevOps and deployment tools include Docker, Git, GitHub, Vercel, Render and Streamlit deployment.",
+    "source_files": ["skills.md"]
+  },
+  {
+    "id": "skills_05",
+    "user_input": "Which machine learning topics and libraries does Touqeer know?",
+    "reference": "His machine learning background includes NumPy, pandas, matplotlib, seaborn, exploratory data analysis, feature engineering, supervised learning, and ANN, CNN and RNN models.",
+    "source_files": ["skills.md"]
+  },
+  {
+    "id": "project_01",
+    "user_input": "What is LifeOps AI, and what is it designed to do?",
+    "reference": "LifeOps AI is an AI-powered productivity and life management dashboard developed by Touqeer Ali. It provides AI-powered productivity assistance, PostgreSQL-based data management, semantic retrieval using pgvector, calendar and Gmail integrations, and user authentication.",
+    "source_files": ["projects.md"]
+  },
+  {
+    "id": "project_02",
+    "user_input": "Which technologies are used in the LifeOps AI project?",
+    "reference": "LifeOps AI uses React, Vite, Tailwind CSS, FastAPI, PostgreSQL, pgvector, Auth0, Google Calendar OAuth and Gmail integration.",
+    "source_files": ["projects.md"]
+  },
+  {
+    "id": "project_03",
+    "user_input": "Explain Touqeer's Corrective RAG project and its main retrieval behavior.",
+    "reference": "Corrective RAG is an Agentic Retrieval-Augmented Generation system developed by Touqeer. It combines keyword-based BM25 and dense vector retrieval, evaluates retrieved-document relevance, corrects weak retrieval results and generates answers grounded in retrieved documents. It uses web search as a fallback when document evidence is insufficient.",
+    "source_files": ["projects.md"]
+  },
+  {
+    "id": "project_04",
+    "user_input": "What is Document Search RAG, and does it include evaluation?",
+    "reference": "Document Search RAG is a document question-answering application. It supports document ingestion and processing, semantic document chunking, hybrid vector and keyword retrieval, question answering over uploaded documents, RAGAS evaluation and Tavily web-search fallback.",
+    "source_files": ["projects.md"]
+  },
+  {
+    "id": "project_05",
+    "user_input": "Has Touqeer developed an Agentic RAG Knowledge Assistant, and where can it be tried?",
+    "reference": "Touqeer developed a deployed Agentic RAG Knowledge Assistant on Streamlit. It provides knowledge-base question answering and AI-powered information retrieval. Its live demo is https://agentic-rag-knowledge-assistant.streamlit.app/.",
+    "source_files": ["projects.md"]
+  },
+  {
+    "id": "services_01",
+    "user_input": "What AI services can Touqeer provide to a business?",
+    "reference": "Touqeer offers custom RAG chatbots, PDF and document question answering, knowledge-base and internal assistants, customer-support AI, semantic and hybrid search, reranking, AI agents, agentic RAG workflows and FastAPI backends for AI applications.",
+    "source_files": ["services.md"]
+  },
+  {
+    "id": "services_02",
+    "user_input": "Can Touqeer build websites and dashboards as well as AI systems?",
+    "reference": "Yes. His web services include React and Next.js websites, SaaS landing pages, dashboards, admin portals, UI redesigns and animated interfaces using GSAP and Framer Motion.",
+    "source_files": ["services.md"]
+  },
+  {
+    "id": "contact_01",
+    "user_input": "How can a recruiter or client contact Touqeer? Give the email and LinkedIn.",
+    "reference": "Touqeer can be contacted at touqeerali3417@gmail.com or through LinkedIn at linkedin.com/in/touqeer-ali-web-developer/.",
+    "source_files": ["contact.md"]
+  },
+  {
+    "id": "contact_02",
+    "user_input": "Share Touqeer's GitHub profile and portfolio website.",
+    "reference": "Touqeer's GitHub profile is github.com/Touqeer3417 and his portfolio website is touqeer-ali-portfolio.vercel.app.",
+    "source_files": ["contact.md"]
+  }
+]
