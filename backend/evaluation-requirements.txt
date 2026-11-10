@@ -1,0 +1,3 @@
+# Install from the backend directory. Keep evaluation dependencies out of runtime requirements.
+-r requirements.txt
+ragas==0.4.3
