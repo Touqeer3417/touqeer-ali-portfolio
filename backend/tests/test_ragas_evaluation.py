@@ -172,6 +172,34 @@ class EvaluationTraceTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn("outside documented range", result["metric_errors"]["context_recall"])
 
 
+class RagCompatibilityTests(unittest.TestCase):
+    def test_existing_streaming_generator_still_streams_one_retrieval_trace(self):
+        import app.rag as rag
+
+        document = SimpleNamespace(
+            page_content="Portfolio knowledge passage",
+            metadata={"source": "about.md", "chunk_index": 0},
+        )
+        chain = MagicMock()
+        chain.stream.return_value = iter([SimpleNamespace(content="streamed text")])
+        messages = [{"role": "user", "content": "Tell me about Touqeer."}]
+
+        with (
+            patch.object(rag, "retrieve_documents", return_value=[document]) as retrieve,
+            patch.object(rag, "build_answer_chain", return_value=chain) as build_chain,
+        ):
+            chunks = list(rag.stream_answer(messages))
+
+        self.assertEqual(chunks, ["streamed text"])
+        retrieve.assert_called_once()
+        build_chain.assert_called_once()
+        chain.stream.assert_called_once()
+        inputs = chain.stream.call_args.args[0]
+        self.assertIn("Portfolio knowledge passage", inputs["context"])
+        self.assertIn("about.md", inputs["sources"])
+        self.assertEqual(inputs["history"][-1].content, "Tell me about Touqeer.")
+
+
 class ReportTests(unittest.TestCase):
     def test_averages_only_available_scores(self):
         results = [
