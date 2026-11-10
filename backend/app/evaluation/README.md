@@ -40,3 +40,13 @@ All scores are retained as returned by RAGAS. A failed metric is recorded as an 
 Each report includes dataset/sample counts, evaluator and RAGAS versions, UTC timestamp, aggregate scores, per-question references, retrieved contexts, generated answers, individual metric scores and explicit errors. A metric average is calculated only from successful numeric scores for that metric. Partial sample failures remain visible in the report.
 
 The evaluator uses bounded sample concurrency and per-operation timeouts. It is an offline developer command and is never invoked by the FastAPI `/chat` endpoint.
+
+## Unit tests
+
+From `backend/`, run the mock-based test suite with:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+The RAGAS import/constructor tests are skipped when the separate evaluation requirements have not been installed. No live API calls are made by the unit tests.
