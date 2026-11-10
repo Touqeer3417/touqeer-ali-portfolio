@@ -147,6 +147,56 @@ def build_history(messages: list[dict]) -> list[BaseMessage]:
     return history
 
 
+def build_answer_chain():
+    """Build the same prompt and configured chat model used by chat streaming."""
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", SYSTEM_PROMPT),
+            MessagesPlaceholder(variable_name="history"),
+        ]
+    )
+    return prompt | get_chat_model()
+
+
+def _answer_text(content) -> str:
+    """Normalize LangChain message content to plain text."""
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        return "".join(
+            part.get("text", "")
+            for part in content
+            if isinstance(part, dict) and isinstance(part.get("text"), str)
+        )
+    return ""
+
+
+def generate_answer(messages: list[dict], documents) -> str:
+    """Generate one non-streaming answer from already-retrieved documents.
+
+    Used by offline evaluation. Retrieval and context are supplied by the caller,
+    so evaluation does not retrieve a second time.
+    """
+    if not documents:
+        return (
+            "I could not find that information in Touqeer's "
+            "portfolio knowledge base. Please contact him directly."
+        )
+
+    context, sources = format_context(documents)
+    response = build_answer_chain().invoke(
+        {
+            "context": context,
+            "sources": sources,
+            "history": build_history(messages),
+        }
+    )
+    answer = _answer_text(getattr(response, "content", response))
+    if not answer.strip():
+        raise RuntimeError("The configured chat model returned an empty answer.")
+    return answer
+
+
 def stream_answer(messages: list[dict]) -> Iterator[str]:
     """Generate a grounded, streaming answer using LangChain."""
 
@@ -173,16 +223,8 @@ def stream_answer(messages: list[dict]) -> Iterator[str]:
         # 3. Build conversation history.
         history = build_history(messages)
 
-        # 4. Build the LangChain prompt.
-        prompt = ChatPromptTemplate.from_messages(
-            [
-                ("system", SYSTEM_PROMPT),
-                MessagesPlaceholder(variable_name="history"),
-            ]
-        )
-
-        # 5. Connect the prompt to ChatOpenAI.
-        chain = prompt | get_chat_model()
+        # 4. Reuse the shared prompt and configured ChatOpenAI model.
+        chain = build_answer_chain()
 
         # 6. Stream the answer to the existing FastAPI endpoint.
         stream = chain.stream(
