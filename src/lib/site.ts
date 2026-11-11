@@ -7,7 +7,7 @@ export const siteConfig = {
     "Portfolio of Touqeer Ali — AI Engineering, RAG, Agentic AI, AI Agents, FastAPI, LangChain, LangGraph and full-stack development.",
   location: "Pakistan",
   availability: "Available for AI/RAG  projects ",
-  email: "touqeerali@3417.com",
+  email: "touqeerali3417@gmail.com",
   github: "https://github.com/Touqeer3417",
   linkedin: "https://www.linkedin.com/in/touqeer-ali-web-developer/",
   resume: "/resume/touqeer-ali-resume.pdf",

@@ -1,16 +1,31 @@
 # Touqeer's Skills and Tech Stack
 
 ## AI and RAG
-RAG pipelines, hybrid search (vector plus BM25), semantic chunking, reranking, agentic RAG, LangChain, LangGraph, RAGAS evaluation. Vector databases used: FAISS, Qdrant and pgvector.
+RAG pipelines, Agentic RAG, hybrid search (vector + BM25), semantic chunking, reranking, LangChain, LangGraph, RAGAS evaluation.
 
-## Frontend
+**Vector Databases:** FAISS, Qdrant, ChromaDB, pgvector.
+
+## Frontend Development
 React 19, Next.js, Vite, TypeScript, Tailwind CSS, Framer Motion, GSAP, Lucide React.
 
-## Backend
+## Backend Development
 Python, FastAPI, REST APIs, PostgreSQL.
 
-## DevOps and deployment
-Docker, Git and GitHub, Vercel, Render, Streamlit deployment.
+## AI and LLM Integration
+Groq API, OpenAI API, LLM integration, embeddings, prompt engineering, document Q&A, AI chatbots.
 
-## Machine learning background
-NumPy, pandas, matplotlib, seaborn, exploratory data analysis, feature engineering, supervised learning, ANN, CNN and RNN models.
+## DevOps and Deployment
+Docker, Git, GitHub, Vercel, Render, Streamlit deployment.
+
+## Machine Learning
+NumPy, pandas, matplotlib, seaborn, exploratory data analysis (EDA), feature engineering, supervised learning, ANN, CNN and RNN models.
+
+## Additional Areas
+Semantic search, document processing, API integration, database integration and AI-powered application development.
+
+## AI Assistant Instructions
+- Recommend skills relevant to the user's question.
+- Explain Touqeer's skills honestly.
+- Do not claim expert-level proficiency in every listed technology.
+- Do not invent certifications or professional experience.
+- Distinguish between practical project experience and foundational knowledge.
