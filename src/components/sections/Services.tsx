@@ -11,7 +11,10 @@ export function Services() {
       id="services"
       className="section-space border-t border-[var(--line)]"
     >
-      <Container className="max-w-[78.75rem]">
+      <div
+        className="mx-auto w-full px-5 sm:px-8 lg:px-6 2xl:px-0"
+        style={{ maxWidth: "1400px" }}
+      >
         <FadeIn>
           <SectionHeading
             eyebrow="Services"
@@ -46,7 +49,7 @@ export function Services() {
             </FadeIn>
           ))}
         </div>
-      </Container>
+      </div>
     </section>
   );
 }
