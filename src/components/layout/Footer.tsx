@@ -5,7 +5,7 @@ import { siteConfig } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="border-t border-[var(--line)] py-8 sm:py-10">
+    <footer className="section-zoom-90 border-t border-[var(--line)] py-8 sm:py-10">
       <Container className="flex flex-col gap-6 text-sm text-[var(--body-copy)] sm:flex-row sm:items-center sm:justify-between">
         <div>
           © {new Date().getFullYear()} {siteConfig.name}
