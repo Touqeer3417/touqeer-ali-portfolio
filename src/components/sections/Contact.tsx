@@ -15,9 +15,9 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="section-space section-zoom-90 border-t border-(--line)"
+      className="section-space border-t border-(--line)"
     >
-      <Container>
+      <Container className="max-w-[78.75rem]">
         <FadeIn>
           <div className="contact-panel relative overflow-hidden rounded-[2.025rem] border border-(--line) px-[1.35rem] py-[2.7rem] sm:px-[2.25rem] sm:py-[3.6rem] lg:px-[3.6rem] lg:py-[4.5rem]">
 
