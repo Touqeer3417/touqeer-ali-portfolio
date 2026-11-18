@@ -1,6 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
 
-import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FadeIn } from "@/components/animation/FadeIn";
 import { services } from "@/data/skills";
@@ -11,10 +10,7 @@ export function Services() {
       id="services"
       className="section-space border-t border-[var(--line)]"
     >
-      <div
-        className="mx-auto w-full px-5 sm:px-8 lg:px-6 2xl:px-0"
-        style={{ maxWidth: "1400px" }}
-      >
+      <div className="services-content">
         <FadeIn>
           <SectionHeading
             eyebrow="Services"
@@ -29,17 +25,17 @@ export function Services() {
               key={service.number}
               delay={Math.min(index * 0.04, 0.15)}
             >
-              <article className="service-row group grid gap-[0.9rem] border-b border-[var(--line)] py-[1.575rem] transition sm:grid-cols-[72px_1fr_auto] sm:items-center sm:py-[2.025rem]">
+              <article className="service-row group grid gap-[0.9rem] border-b border-[var(--line)] py-[1.25rem] transition sm:grid-cols-[50px_1fr_auto] sm:items-center sm:py-[1.35rem]">
                 <span className="font-mono text-xs tracking-[0.2em] text-[var(--accent)]">
                   {service.number}
                 </span>
 
                 <div>
-                  <h3 className="text-[1.125rem] font-semibold tracking-[-0.03em] text-[var(--foreground)] sm:text-[1.35rem]">
+                  <h3 className="text-[1.125rem] font-semibold tracking-[-0.03em] text-[var(--foreground)] sm:text-[1.2rem]">
                     {service.title}
                   </h3>
 
-                  <p className="mt-[0.45rem] max-w-2xl text-[0.8rem] leading-[1.55] text-[var(--body-copy)] sm:text-[0.9rem]">
+                  <p className="mt-[0.45rem] max-w-2xl text-[0.75rem] leading-[1.55] text-[var(--body-copy)] sm:text-[0.75rem]">
                     {service.description}
                   </p>
                 </div>
