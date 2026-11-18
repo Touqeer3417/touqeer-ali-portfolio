@@ -8,9 +8,9 @@ export function Projects() {
   return (
     <section
       id="work"
-      className="section-space section-zoom-90 border-t border-[var(--line)]"
+      className="section-space border-t border-[var(--line)]"
     >
-      <Container>
+      <Container className="max-w-[78.75rem]">
         <FadeIn>
           <div className="mb-[2.7rem] flex flex-col gap-[1.8rem] lg:mb-[3.6rem] lg:flex-row lg:items-end lg:justify-between">
             <SectionHeading
