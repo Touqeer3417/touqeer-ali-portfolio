@@ -147,7 +147,7 @@ export function Hero() {
     <section
       ref={root}
       id="top"
-      className="relative min-h-screen overflow-hidden pt-[92px] sm:pt-24"
+      className="relative min-h-screen overflow-hidden pt-[6.4rem] sm:pt-24"
     >
       {/* -----------------------------------------
           BACKGROUND
@@ -263,7 +263,7 @@ export function Hero() {
           <div
             ref={visual}
             data-hero-visual
-            className="relative mx-auto aspect-square w-full max-w-[360px] self-center"
+            className="relative mx-auto aspect-square w-full max-w-[22.5rem] self-center"
             style={{ perspective: "1200px" }}
           >
             {/* WebGL frame */}
