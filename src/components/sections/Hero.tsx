@@ -162,7 +162,7 @@ export function Hero() {
       />
 
       <Container className="relative flex min-h-[calc(100vh-7rem)] flex-col justify-between pb-8 sm:pb-12">
-        <div className="grid flex-1 items-center gap-8 py-10 lg:grid-cols-[1.12fr_0.88fr] lg:gap-4 lg:py-16">
+        <div className="grid flex-1 items-center gap-8 py-10 lg:grid-cols-[1.34fr_0.66fr] lg:gap-8 lg:py-12">
           {/* =====================================
               LEFT CONTENT
           ====================================== */}
@@ -191,7 +191,7 @@ export function Hero() {
             </p>
 
             {/* Main Heading */}
-            <h1 className="max-w-245 text-[clamp(3.25rem,8.5vw,8.6rem)] font-semibold leading-[0.88] tracking-[-0.065em] text-(--foreground)">
+            <h1 className="max-w-245 text-[clamp(2.75rem,7.2vw,8rem)] font-semibold leading-[0.88] tracking-[-0.065em] text-(--foreground)">
               <TextReveal text="BUILDING" delay={0.1} />
 
               <br />
@@ -263,7 +263,7 @@ export function Hero() {
           <div
             ref={visual}
             data-hero-visual
-            className="relative mx-auto min-h-[320px] w-full max-w-155 sm:min-h-[420px] lg:aspect-square lg:min-h-0"
+            className="relative mx-auto min-h-[320px] w-full max-w-[400px] sm:min-h-[360px] lg:aspect-square lg:min-h-0"
             style={{ perspective: "1200px" }}
           >
             {/* WebGL frame */}
