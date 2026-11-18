@@ -31,7 +31,7 @@ export function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 pt-0">
       <Container>
-        <div className="flex h-[60px] items-center justify-between rounded-full border border-(--line) bg-(--nav) px-3 shadow-[0_12px_50px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:px-4">
+        <div className="flex h-[4.1667rem] items-center justify-between rounded-full border border-(--line) bg-(--nav) px-3 shadow-[0_12px_50px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:px-4">
 
           {/* Logo / Profile */}
           <Link
@@ -40,7 +40,7 @@ export function Navbar() {
             aria-label={`${siteConfig.name} home`}
           >
             {/* Profile Image */}
-          <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full border border-(--line-strong)">
+          <div className="h-[2.7778rem] w-[2.7778rem] shrink-0 overflow-hidden rounded-full border border-(--line-strong)">
               <Image
                 src="/my_image/1706428239229.jpg"
                 alt={`${siteConfig.name} profile photo`}
