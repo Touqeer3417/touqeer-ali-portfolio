@@ -14,18 +14,18 @@ export function SectionHeading({
   descriptionClassName?: string;
 }) {
   return (
-    <div className={cn("max-w-3xl", className)}>
-      <div className="mb-5 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.24em] text-[var(--body-copy)]">
-        <span className="h-px w-9 bg-[var(--accent)]" />
+    <div className={cn("max-w-[42rem]", className)}>
+      <div className="mb-[1.125rem] flex items-center gap-[0.675rem] font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--body-copy)]">
+        <span className="h-px w-[2.025rem] bg-[var(--accent)]" />
         {eyebrow}
       </div>
-      <h2 className="text-balance text-4xl font-semibold tracking-[-0.04em] text-[var(--foreground)] sm:text-5xl lg:text-6xl">
+      <h2 className="text-balance text-[clamp(2rem,3vw,3.375rem)] font-semibold leading-[1.04] tracking-[-0.04em] text-[var(--foreground)]">
         {title}
       </h2>
       {description ? (
         <p
           className={cn(
-            "mt-6 max-w-2xl text-base font-medium leading-7 text-[var(--body-copy)] sm:text-lg",
+            "mt-[1.35rem] max-w-[38rem] text-[0.9rem] font-medium leading-[1.6] text-[var(--body-copy)] sm:text-base",
             descriptionClassName,
           )}
         >

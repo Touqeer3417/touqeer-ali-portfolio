@@ -25,7 +25,7 @@ export function About() {
   return (
     <section id="about" className="section-space border-t border-[var(--line)]">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+        <div className="grid gap-11 lg:grid-cols-[0.8fr_1.2fr] lg:gap-[4.5rem]">
           <FadeIn>
             <SectionHeading
               eyebrow="About"
@@ -35,15 +35,15 @@ export function About() {
             />
           </FadeIn>
 
-          <div className="grid gap-4 sm:grid-cols-3 lg:pt-16">
+          <div className="grid gap-[0.9rem] sm:grid-cols-3 lg:pt-[3.6rem]">
             {cards.map((card, index) => (
               <FadeIn key={card.title} delay={index * 0.08}>
-                <article className="h-full rounded-[28px] border border-[var(--line)] bg-[var(--panel)] p-6 transition hover:border-[var(--line-strong)] hover:bg-[var(--panel-strong)]">
-                  <div className="mb-10 grid h-11 w-11 place-items-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-[var(--accent)]">
-                    <card.icon className="h-5 w-5" />
+                <article className="h-full rounded-[1.575rem] border border-[var(--line)] bg-[var(--panel)] p-[1.35rem] transition hover:border-[var(--line-strong)] hover:bg-[var(--panel-strong)]">
+                  <div className="mb-9 grid h-10 w-10 place-items-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-[var(--accent)]">
+                    <card.icon className="h-[1.125rem] w-[1.125rem]" />
                   </div>
-                  <h3 className="text-lg font-semibold tracking-[-0.02em] text-[var(--foreground)]">{card.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-[var(--body-copy)]">{card.text}</p>
+                  <h3 className="text-[1.0125rem] font-semibold tracking-[-0.02em] text-[var(--foreground)]">{card.title}</h3>
+                  <p className="mt-[0.675rem] text-[0.8rem] leading-[1.55] text-[var(--body-copy)]">{card.text}</p>
                 </article>
               </FadeIn>
             ))}

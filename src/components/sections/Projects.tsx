@@ -10,16 +10,16 @@ export function Projects() {
       id="work"
       className="section-space border-t border-[var(--line)]"
     >
-      <Container>
+      <Container className="max-w-[78.75rem]">
         <FadeIn>
-          <div className="mb-12 flex flex-col gap-8 lg:mb-16 lg:flex-row lg:items-end lg:justify-between">
+          <div className="mb-[2.7rem] flex flex-col gap-[1.8rem] lg:mb-[3.6rem] lg:flex-row lg:items-end lg:justify-between">
             <SectionHeading
               eyebrow="Selected work"
               title="Projects built as case studies, not logo collections."
               description="Each project explains the problem, engineering decisions, architecture and outcome — because the proof is in how the system works."
             />
 
-            <div className="max-w-sm font-mono text-[10px] uppercase leading-5 tracking-[0.16em] text-[var(--body-copy)]">
+            <div className="max-w-[19rem] font-mono text-[9px] uppercase leading-[1.7] tracking-[0.15em] text-[var(--body-copy)]">
               03 featured builds · RAG · agents · automation · full-stack
             </div>
           </div>

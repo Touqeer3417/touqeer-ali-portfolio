@@ -50,8 +50,8 @@ export function Experience() {
       ref={root}
       className="section-space border-t border-[var(--line)]"
     >
-      <Container>
-        <div className="grid gap-14 lg:grid-cols-[1fr_0.7fr] lg:gap-20">
+      <Container className="max-w-[78.75rem]">
+        <div className="grid gap-[3.15rem] lg:grid-cols-[1fr_0.7fr] lg:gap-[4.5rem]">
           <div>
             <FadeIn>
               <SectionHeading
@@ -62,7 +62,7 @@ export function Experience() {
 
             <div
               ref={timeline}
-              className="relative mt-10 border-t border-[var(--line)]"
+              className="relative mt-[2.25rem] border-t border-[var(--line)]"
             >
               <div
                 ref={progress}
@@ -72,7 +72,7 @@ export function Experience() {
 
               {experience.map((item, index) => (
                 <FadeIn key={item.title} delay={index * 0.08}>
-                  <div className="relative grid gap-4 border-b border-[var(--line)] py-7 pl-7 sm:grid-cols-[150px_1fr] sm:pl-7">
+                  <div className="relative grid gap-[0.9rem] border-b border-[var(--line)] py-[1.575rem] pl-[1.575rem] sm:grid-cols-[135px_1fr] sm:pl-[1.575rem]">
                     <span
                       className="absolute left-0 top-8 h-2 w-2 rounded-full border border-[var(--background)] bg-[var(--accent)] shadow-[0_0_12px_var(--accent-soft)]"
                       aria-hidden="true"
@@ -83,7 +83,7 @@ export function Experience() {
                     </div>
 
                     <div>
-                      <h3 className="text-xl font-semibold tracking-[-0.03em] text-[var(--foreground)]">
+                      <h3 className="text-[1.125rem] font-semibold tracking-[-0.03em] text-[var(--foreground)]">
                         {item.title}
                       </h3>
 
@@ -91,7 +91,7 @@ export function Experience() {
                         {item.organization}
                       </div>
 
-                      <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--body-copy)]">
+                      <p className="mt-[0.675rem] max-w-2xl text-[0.8rem] leading-[1.55] text-[var(--body-copy)]">
                         {item.description}
                       </p>
                     </div>
@@ -101,23 +101,23 @@ export function Experience() {
             </div>
           </div>
 
-          <FadeIn className="lg:pt-24">
-            <aside className="rounded-[32px] border border-[var(--line)] bg-[var(--panel)] p-7 sm:p-8">
+          <FadeIn className="lg:pt-[5.4rem]">
+            <aside className="rounded-[1.8rem] border border-[var(--line)] bg-[var(--panel)] p-[1.575rem] sm:p-[1.8rem]">
               <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--accent)]">
                 Currently exploring
               </div>
 
-              <div className="mt-8 space-y-5">
+              <div className="mt-[1.8rem] space-y-[1.125rem]">
                 {currentlyExploring.map((item, index) => (
                   <div
                     key={item}
-                    className="flex items-center gap-4 border-b border-[var(--line)] pb-5 last:border-b-0 last:pb-0"
+                    className="flex items-center gap-[0.9rem] border-b border-[var(--line)] pb-[1.125rem] last:border-b-0 last:pb-0"
                   >
                     <span className="font-mono text-[10px] text-[var(--body-copy)]">
                       0{index + 1}
                     </span>
 
-                    <span className="text-base text-[var(--foreground)]">
+                    <span className="text-[0.9rem] text-[var(--foreground)]">
                       {item}
                     </span>
                   </div>
