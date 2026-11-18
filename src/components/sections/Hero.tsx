@@ -147,7 +147,7 @@ export function Hero() {
     <section
       ref={root}
       id="top"
-      className="relative min-h-screen overflow-hidden pt-28 sm:pt-32"
+      className="relative min-h-screen overflow-hidden pt-[92px] sm:pt-24"
     >
       {/* -----------------------------------------
           BACKGROUND
@@ -161,8 +161,8 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      <Container className="relative flex min-h-[calc(100vh-7rem)] flex-col justify-between pb-8 sm:pb-12">
-        <div className="grid flex-1 items-center gap-8 py-10 xl:grid-cols-[1.34fr_0.66fr] xl:gap-8 xl:py-12">
+      <Container className="relative flex min-h-[calc(100svh-6rem)] flex-col justify-between pb-6 sm:pb-8">
+        <div className="grid flex-1 items-start gap-8 pt-1 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)] xl:items-stretch xl:gap-12">
           {/* =====================================
               LEFT CONTENT
           ====================================== */}
@@ -191,7 +191,7 @@ export function Hero() {
             </p>
 
             {/* Main Heading */}
-            <h1 className="max-w-245 text-[clamp(2.75rem,7.2vw,8rem)] font-semibold leading-[0.88] tracking-[-0.065em] text-(--foreground)">
+            <h1 className="max-w-[10ch] text-[clamp(3rem,6.4vw,7.5rem)] font-semibold leading-[0.88] tracking-[-0.065em] text-(--foreground)">
               <TextReveal text="BUILDING" delay={0.1} />
 
               <br />
@@ -263,7 +263,7 @@ export function Hero() {
           <div
             ref={visual}
             data-hero-visual
-            className="relative mx-auto aspect-square w-full max-w-[380px]"
+            className="relative mx-auto aspect-square w-full max-w-[360px] self-center"
             style={{ perspective: "1200px" }}
           >
             {/* WebGL frame */}
