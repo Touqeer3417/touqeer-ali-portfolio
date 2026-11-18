@@ -121,7 +121,7 @@ export function ProjectCard({ project }: { project: Project }) {
       onMouseMove={handleMouseMove}
       className="project-card relative"
     >
-      <div className="group relative overflow-hidden rounded-[32px] border border-[var(--line)] bg-[var(--panel)] transition duration-500 ease-out hover:-translate-y-1 hover:border-[var(--line-strong)]">
+      <div className="group relative overflow-hidden rounded-[1.8rem] border border-[var(--line)] bg-[var(--panel)] transition duration-500 ease-out hover:-translate-y-1 hover:border-[var(--line-strong)]">
         <div className="project-card-glow" aria-hidden />
 
         <Link
@@ -142,29 +142,29 @@ export function ProjectCard({ project }: { project: Project }) {
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
-            <span className="absolute left-5 top-5 rounded-full border border-white/15 bg-black/30 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-white/80 backdrop-blur-md">
+            <span className="absolute left-[1.125rem] top-[1.125rem] rounded-full border border-white/15 bg-black/30 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-white/80 backdrop-blur-md">
               {project.eyebrow}
             </span>
           </div>
 
-          <div className="p-6 sm:p-8">
-            <div className="mb-5 flex items-center justify-between gap-4">
+          <div className="p-[1.35rem] sm:p-[1.8rem]">
+            <div className="mb-[1.125rem] flex items-center justify-between gap-4">
               <span className="font-mono text-xs tracking-[0.2em] text-[var(--accent)]">
                 {project.index}
               </span>
 
-              <ArrowUpRight className="h-5 w-5 text-[var(--muted)] transition duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:rotate-6 group-hover:text-[var(--foreground)]" />
+              <ArrowUpRight className="h-[1.125rem] w-[1.125rem] text-[var(--muted)] transition duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:rotate-6 group-hover:text-[var(--foreground)]" />
             </div>
 
-            <h3 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--foreground)] sm:text-4xl">
+            <h3 className="text-[1.6875rem] font-semibold tracking-[-0.04em] text-[var(--foreground)] sm:text-[2.025rem]">
               {project.title}
             </h3>
 
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-[var(--body-copy)] sm:text-base sm:leading-7">
+            <p className="mt-[0.9rem] max-w-2xl text-[0.8rem] leading-[1.55] text-[var(--body-copy)] sm:text-[0.9rem] sm:leading-[1.6]">
               {project.summary}
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-[1.35rem] flex flex-wrap gap-[0.45rem]">
               {project.stack.slice(0, 5).map((tech) => (
                 <Badge key={tech}>{tech}</Badge>
               ))}
