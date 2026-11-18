@@ -15,7 +15,7 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="section-space border-t border-(--line)"
+      className="section-space section-zoom-90 border-t border-(--line)"
     >
       <Container>
         <FadeIn>
