@@ -164,8 +164,19 @@ code,
   opacity: 1;
 }
 
+.services-content {
+  width: min(88vw, 1680px);
+  margin-inline: auto;
+}
+
 .service-row:hover {
   background: linear-gradient(to right, transparent, var(--accent-soft), transparent);
+}
+
+@media (max-width: 1023px) {
+  .services-content {
+    width: calc(100% - 2.5rem);
+  }
 }
 
 .contact-panel {
