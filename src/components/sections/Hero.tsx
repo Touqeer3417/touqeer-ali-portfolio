@@ -191,7 +191,7 @@ export function Hero() {
             </p>
 
             {/* Main Heading */}
-            <h1 className="max-w-[12ch] text-[clamp(3rem,6.4vw,7.5rem)] font-semibold leading-[0.88] tracking-[-0.065em] text-(--foreground)">
+            <h1 className="max-w-[12ch] text-[clamp(3rem,6.4vw,8.5rem)] font-semibold leading-[0.88] tracking-[-0.065em] text-(--foreground)">
               <TextReveal text="BUILDING" delay={0.1} />
 
               <br />
@@ -263,7 +263,7 @@ export function Hero() {
           <div
             ref={visual}
             data-hero-visual
-            className="relative mx-auto aspect-square w-full max-w-[22.5rem] self-center"
+            className="relative mx-auto aspect-square w-full max-w-[24rem] self-center"
             style={{ perspective: "1200px" }}
           >
             {/* WebGL frame */}
