@@ -48,9 +48,9 @@ export function Experience() {
   return (
     <section
       ref={root}
-      className="section-space section-zoom-90 border-t border-[var(--line)]"
+      className="section-space border-t border-[var(--line)]"
     >
-      <Container>
+      <Container className="max-w-[78.75rem]">
         <div className="grid gap-[3.15rem] lg:grid-cols-[1fr_0.7fr] lg:gap-[4.5rem]">
           <div>
             <FadeIn>
