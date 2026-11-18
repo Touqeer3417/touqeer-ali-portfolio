@@ -147,7 +147,7 @@ export function Hero() {
     <section
       ref={root}
       id="top"
-      className="relative min-h-screen overflow-hidden pt-[6.4rem] sm:pt-24"
+      className="relative min-h-screen overflow-hidden pt-[5.8rem] sm:pt-24"
     >
       {/* -----------------------------------------
           BACKGROUND
@@ -166,11 +166,11 @@ export function Hero() {
           {/* =====================================
               LEFT CONTENT
           ====================================== */}
-          <div className="relative z-20 max-w-5xl">
+          <div className="relative z-20 max-w-5xl xl:pl-2">
             {/* Availability Badge */}
             <div
               data-hero-fade
-              className="mb-7 inline-flex items-center gap-2 rounded-full border border-(--line) bg-(--panel) px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-(--body-copy) backdrop-blur"
+              className="mb-5 inline-flex items-center gap-2 rounded-full border border-(--line) bg-(--panel) px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-(--body-copy) backdrop-blur"
             >
               <span className="relative flex h-2 w-2">
                 <span
@@ -185,7 +185,7 @@ export function Hero() {
             {/* Name + Role */}
             <p
               data-hero-fade
-              className="mb-4 font-mono text-xs uppercase tracking-[0.22em] text-(--body-copy)"
+              className="mb-3 font-mono text-xs uppercase tracking-[0.22em] text-(--body-copy)"
             >
               {siteConfig.name} · {siteConfig.role}
             </p>
@@ -206,10 +206,10 @@ export function Hero() {
             </h1>
 
             {/* Description + Buttons */}
-            <div className="mt-8 grid max-w-3xl gap-6 sm:grid-cols-[1fr_auto] sm:items-end">
+            <div className="mt-7 grid max-w-3xl gap-6 sm:grid-cols-[1fr_auto] sm:items-end">
               <p
                 data-hero-fade
-                className="max-w-2xl text-base font-medium leading-7 text-(--body-copy) sm:text-lg"
+                className="max-w-2xl text-base font-medium leading-[1.55] text-(--body-copy) sm:text-lg"
               >
                 I build AI agents, RAG systems, business automation and
                 polished full-stack products that move from prototype to
@@ -263,7 +263,7 @@ export function Hero() {
           <div
             ref={visual}
             data-hero-visual
-            className="relative mx-auto aspect-square w-full max-w-[24rem] self-center"
+            className="relative mx-auto aspect-square w-full max-w-[24rem] self-center xl:scale-[0.9] xl:-translate-x-1 xl:-translate-y-5"
             style={{ perspective: "1200px" }}
           >
             {/* WebGL frame */}
