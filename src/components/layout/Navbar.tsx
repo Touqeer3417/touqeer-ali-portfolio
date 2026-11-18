@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Menu, Moon, Sun, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
@@ -31,7 +30,7 @@ export function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 pt-4 sm:pt-5">
       <Container>
-        <div className="flex h-16 items-center justify-between rounded-full border border-(--line) bg-(--nav) px-3 shadow-[0_12px_50px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:px-4">
+        <div className="flex h-[62px] items-center justify-between rounded-full border border-(--line) bg-(--nav) px-3 shadow-[0_12px_50px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:px-4">
 
           {/* Logo / Profile */}
           <Link
@@ -40,7 +39,7 @@ export function Navbar() {
             aria-label={`${siteConfig.name} home`}
           >
             {/* Profile Image */}
-          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-(--line-strong)">
+          <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full border border-(--line-strong)">
   <img
     src="/my_image/1706428239229.jpg"
     alt={`${siteConfig.name} profile photo`}
