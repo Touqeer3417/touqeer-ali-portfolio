@@ -162,7 +162,7 @@ export function Hero() {
       />
 
       <Container className="relative flex min-h-[calc(100vh-7rem)] flex-col justify-between pb-8 sm:pb-12">
-        <div className="grid flex-1 items-center gap-8 py-10 lg:grid-cols-[1.34fr_0.66fr] lg:gap-8 lg:py-12">
+        <div className="grid flex-1 items-center gap-8 py-10 xl:grid-cols-[1.34fr_0.66fr] xl:gap-8 xl:py-12">
           {/* =====================================
               LEFT CONTENT
           ====================================== */}
@@ -263,7 +263,7 @@ export function Hero() {
           <div
             ref={visual}
             data-hero-visual
-            className="relative mx-auto min-h-[320px] w-full max-w-[400px] sm:min-h-[360px] lg:aspect-square lg:min-h-0"
+            className="relative mx-auto aspect-square w-full max-w-[380px]"
             style={{ perspective: "1200px" }}
           >
             {/* WebGL frame */}
