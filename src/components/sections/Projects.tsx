@@ -8,7 +8,7 @@ export function Projects() {
   return (
     <section
       id="work"
-      className="section-space border-t border-[var(--line)]"
+      className="section-space section-zoom-90 border-t border-[var(--line)]"
     >
       <Container>
         <FadeIn>
