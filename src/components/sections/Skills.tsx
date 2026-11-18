@@ -7,7 +7,7 @@ export function Skills() {
   return (
     <section
       id="stack"
-      className="section-space border-t border-[var(--line)]"
+      className="section-space section-zoom-90 border-t border-[var(--line)]"
     >
       <Container>
         <div className="grid gap-11 lg:grid-cols-[0.75fr_1.25fr] lg:gap-[4.5rem]">
