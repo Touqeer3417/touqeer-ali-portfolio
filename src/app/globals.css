@@ -37,8 +37,16 @@
 }
 
 html {
-  scroll-padding-top: 100px;
+  scroll-padding-top: 6.95rem;
   background: var(--background);
+}
+
+/* Keep desktop typography and rem-based spacing visually consistent when
+   the browser zoom changes the available CSS viewport width. */
+@media (min-width: 1536px) {
+  html {
+    font-size: clamp(14px, 0.75vw, 16px);
+  }
 }
 
 body {
