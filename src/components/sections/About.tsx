@@ -25,7 +25,7 @@ export function About() {
   return (
     <section id="about" className="section-space border-t border-[var(--line)]">
       <Container>
-        <div className="grid gap-11 lg:grid-cols-[0.8fr_1.2fr] lg:gap-[4.5rem]>
+        <div className="grid gap-11 lg:grid-cols-[0.8fr_1.2fr] lg:gap-[4.5rem]">
           <FadeIn>
             <SectionHeading
               eyebrow="About"
