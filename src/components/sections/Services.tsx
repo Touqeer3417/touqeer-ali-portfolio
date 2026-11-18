@@ -9,9 +9,9 @@ export function Services() {
   return (
     <section
       id="services"
-      className="section-space section-zoom-90 border-t border-[var(--line)]"
+      className="section-space border-t border-[var(--line)]"
     >
-      <Container>
+      <Container className="max-w-[78.75rem]">
         <FadeIn>
           <SectionHeading
             eyebrow="Services"
