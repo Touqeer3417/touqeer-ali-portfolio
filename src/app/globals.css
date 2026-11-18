@@ -175,12 +175,6 @@ code,
     var(--surface);
 }
 
-@media (min-width: 1024px) {
-  .section-zoom-90 {
-    zoom: 0.9;
-  }
-}
-
 @media (max-width: 1023px) {
   .hero-grid {
     background-size: 48px 48px;
