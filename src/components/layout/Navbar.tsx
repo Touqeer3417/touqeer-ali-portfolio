@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Menu, Moon, Sun, X } from "lucide-react";
@@ -28,7 +29,7 @@ export function Navbar() {
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 pt-4 sm:pt-5">
+    <header className="fixed inset-x-0 top-0 z-50 pt-4">
       <Container>
         <div className="flex h-[62px] items-center justify-between rounded-full border border-(--line) bg-(--nav) px-3 shadow-[0_12px_50px_rgba(0,0,0,0.14)] backdrop-blur-xl sm:px-4">
 
@@ -40,12 +41,16 @@ export function Navbar() {
           >
             {/* Profile Image */}
           <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full border border-(--line-strong)">
-  <img
-    src="/my_image/1706428239229.jpg"
-    alt={`${siteConfig.name} profile photo`}
-    className="h-full w-full object-cover"
-  />
-</div>
+              <Image
+                src="/my_image/1706428239229.jpg"
+                alt={`${siteConfig.name} profile photo`}
+                width={44}
+                height={44}
+                sizes="44px"
+                priority
+                className="h-full w-full object-cover"
+              />
+            </div>
 
             {/* Name */}
             <span className="hidden text-sm font-semibold tracking-[-0.02em] text-(--foreground) sm:block">
