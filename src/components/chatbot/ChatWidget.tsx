@@ -6,17 +6,16 @@ import { MessageCircle, Send, X } from "lucide-react";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
+
 const GREETING: Msg = {
   role: "assistant",
   content:
-    "Hi! I'm Touqeer's AI assistant. Ask me about his projects, skills or services. English ya Roman Urdu, dono chalega.",
+    "Hello! Welcome to Touqeer Ali's Portfolio.\n\nI'm Touqeer's AI Assistant. Ask me about his skills, projects, background, or services.",
 };
 
 const SUGGESTIONS = [
-  "What has Touqeer built?",
-  "Can he build a RAG chatbot for my business?",
-  "Touqeer ki skills kya hain?",
-  "How can I contact him?",
+  "Can you tell me about Touqeer Ali's background ?",
+  " how can I contact him for a project",
 ];
 
 export default function ChatWidget() {

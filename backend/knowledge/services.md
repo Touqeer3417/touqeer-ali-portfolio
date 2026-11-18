@@ -30,8 +30,6 @@ Developing backend services and APIs for web applications and AI-powered systems
 ## 10. Full-Stack Web Application Development
 Building complete web applications with interactive user interfaces and backend functionality.
 
----
-
 ## Service Information
 
 - Services are customized according to each client's requirements.

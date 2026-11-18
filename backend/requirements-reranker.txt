@@ -1,0 +1,2 @@
+# Optional Cross-Encoder dependency, required while RERANKER_ENABLED is true.
+sentence-transformers>=4.0,<6.0

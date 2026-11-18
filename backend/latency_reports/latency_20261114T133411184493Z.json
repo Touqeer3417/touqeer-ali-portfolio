@@ -1,0 +1,277 @@
+{
+  "created_at": "2026-11-14T13:34:11.183649+00:00",
+  "total_queries": 12,
+  "aggregate_latency_ms": {
+    "sample_count": 12,
+    "percentile_method": "nearest_rank",
+    "total_ms": {
+      "count": 12,
+      "average": 6552.793416679681,
+      "minimum": 2610.6512998230755,
+      "maximum": 35862.09090007469,
+      "p50": 3656.2330001033843,
+      "p95": 35862.09090007469,
+      "p99": 35862.09090007469
+    },
+    "embedding_ms": {
+      "count": 12,
+      "average": 461.8251416250132,
+      "minimum": 296.7342999763787,
+      "maximum": 1310.465499991551,
+      "p50": 323.947099968791,
+      "p95": 1310.465499991551,
+      "p99": 1310.465499991551
+    },
+    "retrieval_ms": {
+      "count": 12,
+      "average": 3722.1795250467644,
+      "minimum": 1099.72760011442,
+      "maximum": 24126.898100133985,
+      "p50": 1586.9719001930207,
+      "p95": 24126.898100133985,
+      "p99": 24126.898100133985
+    },
+    "reranking_ms": {
+      "count": 12,
+      "average": 2081.711175017214,
+      "minimum": 85.14470001682639,
+      "maximum": 19898.50529981777,
+      "p50": 556.2014000024647,
+      "p95": 19898.50529981777,
+      "p99": 19898.50529981777
+    },
+    "llm_ms": {
+      "count": 12,
+      "average": 2830.026783340145,
+      "minimum": 1247.126900125295,
+      "maximum": 11731.473300140351,
+      "p50": 1701.5949999913573,
+      "p95": 11731.473300140351,
+      "p99": 11731.473300140351
+    },
+    "ttft_ms": {
+      "count": 12,
+      "average": 4991.74261673276,
+      "minimum": 1811.4404999651015,
+      "maximum": 27128.304800018668,
+      "p50": 2755.266500171274,
+      "p95": 27128.304800018668,
+      "p99": 27128.304800018668
+    }
+  },
+  "timing_semantics": {
+    "total_ms": "From stream_answer entry through completion of the full streamed response.",
+    "embedding_ms": "Existing query-embedding call duration; nested inside retrieval_ms.",
+    "retrieval_ms": "Existing retriever duration, including embedding, dense/BM25 retrieval, fusion and reranking.",
+    "reranking_ms": "Existing Cross-Encoder scoring/reordering duration; nested inside retrieval_ms.",
+    "llm_ms": "Existing streamed LLM duration until its stream is exhausted; excludes final note formatting.",
+    "ttft_ms": "Request start to first nonempty generated token; null when no generated token is produced.",
+    "percentiles": "Nearest-rank percentiles. Unavailable component samples are excluded from that component's statistics."
+  },
+  "samples": [
+    {
+      "id": "about_identity",
+      "status": "complete",
+      "latency_ms": {
+        "total_ms": 35862.09090007469,
+        "embedding_ms": 1310.465499991551,
+        "retrieval_ms": 24126.898100133985,
+        "reranking_ms": 19898.50529981777,
+        "llm_ms": 11731.473300140351,
+        "ttft_ms": 27128.304800018668
+      },
+      "output_comparison_to_baseline": {
+        "baseline_report": "D:\\touqeer-ali-portfolio\\backend\\evaluation\\reports\\6.json",
+        "retrieved_contexts_unchanged": true,
+        "generated_response_unchanged": true
+      }
+    },
+    {
+      "id": "about_languages",
+      "status": "complete",
+      "latency_ms": {
+        "total_ms": 7208.137900102884,
+        "embedding_ms": 981.0250999871641,
+        "retrieval_ms": 5660.5257000774145,
+        "reranking_ms": 687.5038000289351,
+        "llm_ms": 1547.2959000617266,
+        "ttft_ms": 6784.4023001380265
+      },
+      "output_comparison_to_baseline": {
+        "baseline_report": "D:\\touqeer-ali-portfolio\\backend\\evaluation\\reports\\6.json",
+        "retrieved_contexts_unchanged": true,
+        "generated_response_unchanged": true
+      }
+    },
+    {
+      "id": "skills_ai_rag",
+      "status": "complete",
+      "latency_ms": {
+        "total_ms": 3692.500200122595,
+        "embedding_ms": 414.32179999537766,
+        "retrieval_ms": 1990.6597000081092,
+        "reranking_ms": 561.9965000078082,
+        "llm_ms": 1701.5949999913573,
+        "ttft_ms": 3021.6118001844734
+      },
+      "output_comparison_to_baseline": {
+        "baseline_report": "D:\\touqeer-ali-portfolio\\backend\\evaluation\\reports\\6.json",
+        "retrieved_contexts_unchanged": true,
+        "generated_response_unchanged": false
+      }
+    },
+    {
+      "id": "corrective_rag",
+      "status": "complete",
+      "latency_ms": {
+        "total_ms": 4408.636099891737,
+        "embedding_ms": 335.6663000304252,
+        "retrieval_ms": 1232.4839001521468,
+        "reranking_ms": 207.52309984527528,
+        "llm_ms": 3175.4605998285115,
+        "ttft_ms": 2004.598599858582
+      },
+      "output_comparison_to_baseline": {
+        "baseline_report": "D:\\touqeer-ali-portfolio\\backend\\evaluation\\reports\\6.json",
+        "retrieved_contexts_unchanged": true,
+        "generated_response_unchanged": false
+      }
+    },
+    {
+      "id": "document_search_rag",
+      "status": "complete",
+      "latency_ms": {
+        "total_ms": 3405.6790999602526,
+        "embedding_ms": 297.668999992311,
+        "retrieval_ms": 1117.0369000174105,
+        "reranking_ms": 130.59120019897819,
+        "llm_ms": 2288.3667999412864,
+        "ttft_ms": 2148.3980000484735
+      },
+      "output_comparison_to_baseline": {
+        "baseline_report": "D:\\touqeer-ali-portfolio\\backend\\evaluation\\reports\\6.json",
+        "retrieved_contexts_unchanged": true,
+        "generated_response_unchanged": false
+      }
+    },
+    {
+      "id": "lifeops_ai",
+      "status": "complete",
+      "latency_ms": {
+        "total_ms": 2759.274899959564,
+        "embedding_ms": 323.947099968791,
+        "retrieval_ms": 1099.72760011442,
+        "reranking_ms": 85.14470001682639,
+        "llm_ms": 1659.3436000403017,
+        "ttft_ms": 1811.4404999651015
+      },
+      "output_comparison_to_baseline": {
+        "baseline_report": "D:\\touqeer-ali-portfolio\\backend\\evaluation\\reports\\6.json",
+        "retrieved_contexts_unchanged": true,
+        "generated_response_unchanged": false
+      }
+    },
+    {
+      "id": "portfolio_assistant",
+      "status": "complete",
+      "latency_ms": {
+        "total_ms": 2610.6512998230755,
+        "embedding_ms": 296.7342999763787,
+        "retrieval_ms": 1114.8811001330614,
+        "reranking_ms": 131.61909999325871,
+        "llm_ms": 1495.5176999792457,
+        "ttft_ms": 1902.2911000065506
+      },
+      "output_comparison_to_baseline": {
+        "baseline_report": "D:\\touqeer-ali-portfolio\\backend\\evaluation\\reports\\6.json",
+        "retrieved_contexts_unchanged": true,
+        "generated_response_unchanged": true
+      }
+    },
+    {
+      "id": "services",
+      "status": "complete",
+      "latency_ms": {
+        "total_ms": 5305.113899987191,
+        "embedding_ms": 342.376499902457,
+        "retrieval_ms": 1586.9719001930207,
+        "reranking_ms": 556.2014000024647,
+        "llm_ms": 3717.8932998795062,
+        "ttft_ms": 3945.231700083241
+      },
+      "output_comparison_to_baseline": {
+        "baseline_report": "D:\\touqeer-ali-portfolio\\backend\\evaluation\\reports\\6.json",
+        "retrieved_contexts_unchanged": true,
+        "generated_response_unchanged": false
+      }
+    },
+    {
+      "id": "service_pricing",
+      "status": "complete",
+      "latency_ms": {
+        "total_ms": 3667.961500119418,
+        "embedding_ms": 297.7586998604238,
+        "retrieval_ms": 1761.7690998595208,
+        "reranking_ms": 778.9030000567436,
+        "llm_ms": 1905.993000138551,
+        "ttft_ms": 3025.5490001291037
+      },
+      "output_comparison_to_baseline": {
+        "baseline_report": "D:\\touqeer-ali-portfolio\\backend\\evaluation\\reports\\6.json",
+        "retrieved_contexts_unchanged": true,
+        "generated_response_unchanged": true
+      }
+    },
+    {
+      "id": "contact",
+      "status": "complete",
+      "latency_ms": {
+        "total_ms": 3263.2983000949025,
+        "embedding_ms": 327.2922998294234,
+        "retrieval_ms": 1704.6695998869836,
+        "reranking_ms": 669.2875002045184,
+        "llm_ms": 1558.324299985543,
+        "ttft_ms": 2755.266500171274
+      },
+      "output_comparison_to_baseline": {
+        "baseline_report": "D:\\touqeer-ali-portfolio\\backend\\evaluation\\reports\\6.json",
+        "retrieved_contexts_unchanged": true,
+        "generated_response_unchanged": true
+      }
+    },
+    {
+      "id": "professional_experience_years",
+      "status": "complete",
+      "latency_ms": {
+        "total_ms": 2793.943899916485,
+        "embedding_ms": 300.81769987009466,
+        "retrieval_ms": 1546.5518001001328,
+        "reranking_ms": 554.5469000935555,
+        "llm_ms": 1247.126900125295,
+        "ttft_ms": 2573.1190000660717
+      },
+      "output_comparison_to_baseline": {
+        "baseline_report": "D:\\touqeer-ali-portfolio\\backend\\evaluation\\reports\\6.json",
+        "retrieved_contexts_unchanged": true,
+        "generated_response_unchanged": true
+      }
+    },
+    {
+      "id": "technical_stack",
+      "status": "complete",
+      "latency_ms": {
+        "total_ms": 3656.2330001033843,
+        "embedding_ms": 313.8274000957608,
+        "retrieval_ms": 1723.978899884969,
+        "reranking_ms": 718.7115999404341,
+        "llm_ms": 1931.9309999700636,
+        "ttft_ms": 2800.6981001235545
+      },
+      "output_comparison_to_baseline": {
+        "baseline_report": "D:\\touqeer-ali-portfolio\\backend\\evaluation\\reports\\6.json",
+        "retrieved_contexts_unchanged": true,
+        "generated_response_unchanged": false
+      }
+    }
+  ]
+}

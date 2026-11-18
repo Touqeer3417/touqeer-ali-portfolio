@@ -147,7 +147,7 @@ export function Hero() {
     <section
       ref={root}
       id="top"
-      className="relative min-h-screen overflow-hidden pt-28 sm:pt-32"
+      className="relative min-h-screen overflow-hidden pt-[5.8rem] sm:pt-24"
     >
       {/* -----------------------------------------
           BACKGROUND
@@ -161,16 +161,16 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      <Container className="relative flex min-h-[calc(100vh-7rem)] flex-col justify-between pb-8 sm:pb-12">
-        <div className="grid flex-1 items-center gap-8 py-10 lg:grid-cols-[1.12fr_0.88fr] lg:gap-4 lg:py-16">
+      <Container className="relative flex min-h-[calc(100svh-6rem)] flex-col justify-between pb-6 sm:pb-8">
+        <div className="grid flex-1 items-start gap-8 pt-1 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)] xl:items-stretch xl:gap-12">
           {/* =====================================
               LEFT CONTENT
           ====================================== */}
-          <div className="relative z-20 max-w-5xl">
+          <div className="relative z-20 max-w-5xl xl:pl-2">
             {/* Availability Badge */}
             <div
               data-hero-fade
-              className="mb-7 inline-flex items-center gap-2 rounded-full border border-(--line) bg-(--panel) px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-(--body-copy) backdrop-blur"
+              className="mb-5 inline-flex items-center gap-2 rounded-full border border-(--line) bg-(--panel) px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-(--body-copy) backdrop-blur"
             >
               <span className="relative flex h-2 w-2">
                 <span
@@ -185,13 +185,13 @@ export function Hero() {
             {/* Name + Role */}
             <p
               data-hero-fade
-              className="mb-4 font-mono text-xs uppercase tracking-[0.22em] text-(--body-copy)"
+              className="mb-3 font-mono text-xs uppercase tracking-[0.22em] text-(--body-copy)"
             >
               {siteConfig.name} · {siteConfig.role}
             </p>
 
             {/* Main Heading */}
-            <h1 className="max-w-245 text-[clamp(3.25rem,8.5vw,8.6rem)] font-semibold leading-[0.88] tracking-[-0.065em] text-(--foreground)">
+            <h1 className="max-w-[12ch] text-[clamp(3rem,6.4vw,8.5rem)] font-semibold leading-[0.88] tracking-[-0.065em] text-(--foreground)">
               <TextReveal text="BUILDING" delay={0.1} />
 
               <br />
@@ -206,10 +206,10 @@ export function Hero() {
             </h1>
 
             {/* Description + Buttons */}
-            <div className="mt-8 grid max-w-3xl gap-6 sm:grid-cols-[1fr_auto] sm:items-end">
+            <div className="mt-7 grid max-w-3xl gap-6 sm:grid-cols-[1fr_auto] sm:items-end">
               <p
                 data-hero-fade
-                className="max-w-2xl text-base font-medium leading-7 text-(--body-copy) sm:text-lg"
+                className="max-w-2xl text-base font-medium leading-[1.55] text-(--body-copy) sm:text-lg"
               >
                 I build AI agents, RAG systems, business automation and
                 polished full-stack products that move from prototype to
@@ -263,7 +263,7 @@ export function Hero() {
           <div
             ref={visual}
             data-hero-visual
-            className="relative mx-auto min-h-[320px] w-full max-w-155 sm:min-h-[420px] lg:aspect-square lg:min-h-0"
+            className="relative mx-auto aspect-square w-full max-w-[24rem] self-center xl:scale-[0.9] xl:-translate-x-1 xl:-translate-y-5"
             style={{ perspective: "1200px" }}
           >
             {/* WebGL frame */}

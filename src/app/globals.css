@@ -41,6 +41,7 @@ html {
   background: var(--background);
 }
 
+
 body {
   margin: 0;
   min-width: 320px;
@@ -82,7 +83,7 @@ code,
 }
 
 .section-space {
-  padding-block: clamp(5.5rem, 10vw, 9rem);
+  padding-block: clamp(4.95rem, 9vw, 8.1rem);
 }
 
 .hero-grid {

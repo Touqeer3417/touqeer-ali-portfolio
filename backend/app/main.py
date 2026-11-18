@@ -5,7 +5,7 @@ from typing import Literal
 
 from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
@@ -42,7 +42,14 @@ app.add_exception_handler(
 
 class Message(BaseModel):
     role: Literal["user", "assistant"]
-    content: str = Field(min_length=1, max_length=500)
+    content: str = Field(min_length=1, max_length=5000)
+
+    @model_validator(mode="after")
+    def limit_user_input(self) -> "Message":
+        """Keep visitor input bounded while allowing full assistant history."""
+        if self.role == "user" and len(self.content) > 500:
+            raise ValueError("User messages cannot exceed 500 characters")
+        return self
 
 
 class ChatRequest(BaseModel):
