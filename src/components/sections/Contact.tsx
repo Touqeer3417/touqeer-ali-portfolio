@@ -27,7 +27,7 @@ export function Contact() {
             <div className="relative z-10 max-w-4xl">
 
               {/* Small Label */}
-              <div className="mb-[1.125rem] font-mono text-[9px] uppercase tracking-[0.2em] text-(--accent)">
+              <div className="mb-[1.125rem] font-mono text-[11px] uppercase tracking-[0.2em] text-(--accent)">
                 Have a project in mind?
               </div>
 

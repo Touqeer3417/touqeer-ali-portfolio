@@ -142,7 +142,7 @@ export function ProjectCard({ project }: { project: Project }) {
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
-            <span className="absolute left-[1.125rem] top-[1.125rem] rounded-full border border-white/15 bg-black/30 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-white/80 backdrop-blur-md">
+            <span className="absolute left-[1.125rem] top-[1.125rem] rounded-full border border-white/15 bg-black/30 px-3 py-1.5 font-mono text-[12px] uppercase tracking-[0.18em] text-white/80 backdrop-blur-md">
               {project.eyebrow}
             </span>
           </div>

@@ -23,7 +23,7 @@ export function Skills() {
             {skillGroups.map((group, index) => (
               <FadeIn key={group.title} delay={index * 0.06}>
                 <div className="h-full rounded-[1.575rem] border border-[var(--line)] bg-[var(--panel)] p-[1.35rem] sm:p-[1.575rem]">
-                  <div className="mb-[1.35rem] font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--accent)]">
+                  <div className="mb-[1.35rem] font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--accent)]">
                     {group.title}
                   </div>
 

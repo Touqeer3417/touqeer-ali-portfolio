@@ -78,7 +78,7 @@ export function Experience() {
                       aria-hidden="true"
                     />
 
-                    <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--body-copy)]">
+                    <div className="font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--body-copy)]">
                       {item.period}
                     </div>
 
@@ -103,7 +103,7 @@ export function Experience() {
 
           <FadeIn className="lg:pt-[5.4rem]">
             <aside className="rounded-[1.8rem] border border-[var(--line)] bg-[var(--panel)] p-[1.575rem] sm:p-[1.8rem]">
-              <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--accent)]">
+              <div className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--accent)]">
                 Currently exploring
               </div>
 
@@ -113,7 +113,7 @@ export function Experience() {
                     key={item}
                     className="flex items-center gap-[0.9rem] border-b border-[var(--line)] pb-[1.125rem] last:border-b-0 last:pb-0"
                   >
-                    <span className="font-mono text-[10px] text-[var(--body-copy)]">
+                    <span className="font-mono text-[12px] text-[var(--body-copy)]">
                       0{index + 1}
                     </span>
 

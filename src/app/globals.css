@@ -5,15 +5,15 @@
   --foreground: #0c1111;
   --body-copy: #3f4946;
   --muted: #626b68;
-  --muted-strong: #777f7d;
+  --muted-strong: #68726e;
   --surface: #eceee9;
   --panel: rgba(255, 255, 255, 0.55);
   --panel-strong: rgba(255, 255, 255, 0.82);
   --nav: rgba(244, 245, 241, 0.82);
   --line: rgba(11, 17, 17, 0.10);
   --line-strong: rgba(11, 17, 17, 0.22);
-  --accent: #0b8c58;
-  --accent-soft: rgba(11, 140, 88, 0.12);
+  --accent: #07704a;
+  --accent-soft: rgba(7, 112, 74, 0.12);
 }
 
 .dark {
@@ -21,7 +21,7 @@
   --foreground: #eef4ef;
   --body-copy: #bdc8c1;
   --muted: #89938f;
-  --muted-strong: #66716d;
+  --muted-strong: #78837f;
   --surface: #0d1214;
   --panel: rgba(16, 22, 23, 0.66);
   --panel-strong: rgba(22, 30, 30, 0.85);
@@ -128,7 +128,7 @@ code,
   box-shadow: 0 18px 60px rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(16px);
   font-family: var(--font-geist-mono), monospace;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.15em;
 }
 

@@ -408,7 +408,7 @@ export default async function ProjectPage({
                     <div className="flex flex-wrap items-center gap-3">
                       <span
                         className="
-                          font-mono text-[10px] uppercase
+                          font-mono text-[12px] uppercase
                           tracking-[0.2em] text-(--accent)
                         "
                       >
@@ -419,7 +419,7 @@ export default async function ProjectPage({
 
                       <span
                         className="
-                          font-mono text-[10px] uppercase
+                          font-mono text-[12px] uppercase
                           tracking-[0.18em] text-(--body-copy)
                         "
                       >
@@ -494,7 +494,7 @@ export default async function ProjectPage({
                         mt-6 inline-flex items-center gap-2
                         rounded-full border border-(--line)
                         bg-(--surface) px-3 py-2
-                        font-mono text-[9px] uppercase
+                        font-mono text-[11px] uppercase
                         tracking-[0.14em] text-(--body-copy)
                       "
                     >
@@ -546,7 +546,7 @@ export default async function ProjectPage({
                 >
                   <div
                     className="
-                      font-mono text-[9px] uppercase
+                      font-mono text-[11px] uppercase
                       tracking-[0.18em] text-(--body-copy)
                     "
                   >
@@ -904,7 +904,7 @@ export default async function ProjectPage({
                     className="
                       grid h-9 w-9 shrink-0 place-items-center
                       rounded-full border border-(--line)
-                      bg-(--surface) font-mono text-[9px]
+                      bg-(--surface) font-mono text-[11px]
                       text-(--accent)
                     "
                   >
@@ -953,7 +953,7 @@ export default async function ProjectPage({
                     className="
                       grid h-9 w-9 shrink-0 place-items-center
                       rounded-full border border-(--line)
-                      bg-(--surface) font-mono text-[9px]
+                      bg-(--surface) font-mono text-[11px]
                       text-(--accent)
                     "
                   >
@@ -1181,7 +1181,7 @@ export default async function ProjectPage({
                 >
                   <div
                     className="
-                      font-mono text-[9px] uppercase
+                      font-mono text-[11px] uppercase
                       tracking-[0.18em] text-(--accent)
                     "
                   >
@@ -1384,7 +1384,7 @@ function SectionEyebrow({
     <div
       className="
         inline-flex items-center gap-2
-        font-mono text-[10px] uppercase
+        font-mono text-[12px] uppercase
         tracking-[0.18em] text-(--accent)
       "
     >
@@ -1444,14 +1444,14 @@ function StoryCard({
             <Icon className="h-4 w-4 text-(--accent)" />
           </div>
 
-          <span className="font-mono text-[10px] text-(--body-copy)">
+          <span className="font-mono text-[12px] text-(--body-copy)">
             {number}
           </span>
         </div>
 
         <div
           className="
-            mt-8 font-mono text-[9px] uppercase
+            mt-8 font-mono text-[11px] uppercase
             tracking-[0.18em] text-(--accent)
           "
         >
@@ -1534,7 +1534,7 @@ function ScreenshotCard({
 
         <span
           className="
-            font-mono text-[9px] uppercase
+            font-mono text-[11px] uppercase
             tracking-[0.18em] text-(--body-copy)
           "
         >
@@ -1567,7 +1567,7 @@ function ArchitectureStep({
           className="
             grid h-9 w-9 place-items-center rounded-full
             border border-(--line) bg-(--background)
-            font-mono text-[9px] text-(--accent)
+            font-mono text-[11px] text-(--accent)
           "
         >
           {number}
@@ -1632,7 +1632,7 @@ function TechGroup({
 
       <div
         className="
-          mt-6 font-mono text-[9px] uppercase
+          mt-6 font-mono text-[11px] uppercase
           tracking-[0.18em] text-(--body-copy)
         "
       >
@@ -1662,7 +1662,7 @@ function OutcomePoint({
         bg-(--surface) p-4
       "
     >
-      <div className="font-mono text-[9px] text-(--accent)">
+      <div className="font-mono text-[11px] text-(--accent)">
         {number}
       </div>
 

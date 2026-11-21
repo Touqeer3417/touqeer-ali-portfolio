@@ -170,7 +170,7 @@ export function Hero() {
             {/* Availability Badge */}
             <div
               data-hero-fade
-              className="mb-5 inline-flex items-center gap-2 rounded-full border border-(--line) bg-(--panel) px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-(--body-copy) backdrop-blur"
+              className="mb-5 inline-flex items-center gap-2 rounded-full border border-(--line) bg-(--panel) px-3.5 py-2 font-mono text-[12px] uppercase tracking-[0.16em] text-(--body-copy) backdrop-blur"
             >
               <span className="relative flex h-2 w-2">
                 <span
@@ -243,7 +243,7 @@ export function Hero() {
             {/* Technologies */}
             <div
               data-hero-fade
-              className="mt-8 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.16em] text-(--body-copy)"
+              className="mt-8 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[12px] uppercase tracking-[0.16em] text-(--body-copy)"
             >
               <span>RAG</span>
               <span>•</span>
@@ -295,7 +295,7 @@ export function Hero() {
             />
 
             {/* HUD */}
-            <div className="pointer-events-none absolute inset-x-[6%] top-[6%] z-20 flex items-center justify-between gap-4 font-mono text-[9px] uppercase tracking-[0.18em] text-(--body-copy) sm:text-[10px]">
+            <div className="pointer-events-none absolute inset-x-[6%] top-[6%] z-20 flex items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.18em] text-(--body-copy) sm:text-[12px]">
               <span className="rounded-full border border-(--line) bg-(--nav) px-3 py-1.5 backdrop-blur">
                 Live system graph
               </span>
@@ -306,7 +306,7 @@ export function Hero() {
             </div>
 
             {/* Bottom HUD */}
-            <div className="pointer-events-none absolute bottom-[7%] left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-(--line) bg-(--nav) px-4 py-2 font-mono text-[9px] uppercase tracking-[0.18em] text-(--body-copy) backdrop-blur sm:text-[10px]">
+            <div className="pointer-events-none absolute bottom-[7%] left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-(--line) bg-(--nav) px-4 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-(--body-copy) backdrop-blur sm:text-[12px]">
               Query → Retrieve → Reason → Act
             </div>
           </div>

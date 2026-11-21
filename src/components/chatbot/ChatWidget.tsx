@@ -169,7 +169,7 @@ export default function ChatWidget() {
                 onChange={(e) => setInput(e.target.value)}
                 maxLength={500}
                 placeholder="Ask anything about Touqeer..."
-                className="flex-1 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-white/40 focus:border-violet-400/60 focus:outline-none"
+                className="flex-1 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-white/50 focus:border-violet-400/60 focus:outline-none"
               />
               <button
                 type="submit"
