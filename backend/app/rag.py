@@ -322,8 +322,11 @@ async def stream_answer(messages: list[dict]) -> AsyncIterator[str]:
     except Exception:
         logger.exception("Portfolio chatbot RAG request failed")
 
+        # If part of an answer was already streamed, start the apology on a new
+        # paragraph instead of gluing it onto the last token.
         yield (
-            "Sorry, something went wrong while processing your "
+            ("\n\n" if generated_parts else "")
+            + "Sorry, something went wrong while processing your "
             "question. Please try again in a moment."
         )
     finally:

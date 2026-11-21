@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { MessageCircle, Send, X } from "lucide-react";
+import { MessageCircle, Send, Square, X } from "lucide-react";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -19,12 +19,25 @@ const SUGGESTIONS = [
   "How can I contact him?",
 ];
 
+// The backend cites sources as "[Source: file.md]" (used for grounding/evals).
+// Hide them in the UI, including a half-streamed "[Sour" at the end of the text.
+function cleanAnswer(text: string): string {
+  return text
+    .replace(/[ \t]*\[Source:[^\]]*\]/g, "")
+    .replace(/[ \t]*\[(?:S(?:o(?:u(?:r(?:c(?:e(?::[^\]]*)?)?)?)?)?)?)?$/, "")
+    .replace(/[ \t]+\n/g, "\n")
+    .trimEnd();
+}
+
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([GREETING]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const warmed = useRef(false);
+  // Controller of the in-flight request; aborting it cancels the whole chain
+  // (browser fetch -> Next route -> FastAPI -> OpenAI).
+  const abortRef = useRef<AbortController | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
   // wake the (free-tier) backend as soon as the visitor opens the chat
@@ -35,10 +48,17 @@ export default function ChatWidget() {
     }
   }, [open]);
 
+  // cancel any in-flight stream if the widget unmounts (e.g. route change)
+  useEffect(() => () => abortRef.current?.abort(), []);
+
   useEffect(() => {
     const el = listRef.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages, open]);
+
+  function stop() {
+    abortRef.current?.abort();
+  }
 
   async function send(text: string) {
     const question = text.trim();
@@ -57,34 +77,55 @@ export default function ChatWidget() {
     setInput("");
     setLoading(true);
 
+    const controller = new AbortController();
+    abortRef.current = controller;
+    let acc = "";
+    let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
+    const showAssistant = (content: string) =>
+      setMessages((m) => [...m.slice(0, -1), { role: "assistant", content }]);
+
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: history }),
+        signal: controller.signal,
       });
       if (res.status === 429) throw new Error("rate");
       if (!res.ok || !res.body) throw new Error("upstream");
 
-      const reader = res.body.getReader();
+      reader = res.body.getReader();
       const decoder = new TextDecoder();
-      let acc = "";
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         acc += decoder.decode(value, { stream: true });
-        setMessages((m) => [
-          ...m.slice(0, -1),
-          { role: "assistant", content: acc },
-        ]);
+        showAssistant(acc);
       }
+      acc += decoder.decode(); // flush a trailing partial multi-byte character
+      if (!acc.trim()) throw new Error("empty");
+      showAssistant(acc);
     } catch (e) {
-      const text =
-        e instanceof Error && e.message === "rate"
-          ? "Too many messages. Please wait a minute and try again."
-          : "Sorry, I couldn't reach the server. Please try again in a moment.";
-      setMessages((m) => [...m.slice(0, -1), { role: "assistant", content: text }]);
+      if (controller.signal.aborted) {
+        // Stopped by the visitor (or widget unmounted): keep what was streamed.
+        showAssistant(acc.trim() ? acc : "Stopped.");
+      } else if (acc.trim()) {
+        // Stream broke mid-answer (network drop, server timeout): keep the partial text.
+        showAssistant(`${acc}\n\n[Connection interrupted. Please try again.]`);
+      } else {
+        const message = e instanceof Error ? e.message : "";
+        showAssistant(
+          message === "rate"
+            ? "Too many messages. Please wait a minute and try again."
+            : message === "empty"
+              ? "Sorry, I didn't get a response. Please try again."
+              : "Sorry, I couldn't reach the server. Please try again in a moment.",
+        );
+      }
     } finally {
+      // Release the connection if we left early; harmless when already finished.
+      reader?.cancel().catch(() => {});
+      if (abortRef.current === controller) abortRef.current = null;
       setLoading(false);
     }
   }
@@ -119,6 +160,9 @@ export default function ChatWidget() {
             <div
               ref={listRef}
               data-lenis-prevent
+              role="log"
+              aria-live="polite"
+              aria-busy={loading}
               className="flex-1 space-y-3 overflow-y-auto overscroll-contain px-4 py-4"
             >
               {messages.map((m, i) => (
@@ -134,7 +178,7 @@ export default function ChatWidget() {
                         : "border border-white/10 bg-white/5 text-white/90")
                     }
                   >
-                    {m.content || (
+                    {(m.role === "assistant" ? cleanAnswer(m.content) : m.content) || (
                       <span className="animate-pulse text-white/50">typing...</span>
                     )}
                   </div>
@@ -171,14 +215,25 @@ export default function ChatWidget() {
                 placeholder="Ask anything about Touqeer..."
                 className="flex-1 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-white/50 focus:border-violet-400/60 focus:outline-none"
               />
-              <button
-                type="submit"
-                disabled={loading || !input.trim()}
-                aria-label="Send message"
-                className="grid h-9 w-9 place-items-center rounded-full bg-linear-to-br from-violet-600 to-cyan-500 text-white transition disabled:opacity-40"
-              >
-                <Send size={16} />
-              </button>
+              {loading ? (
+                <button
+                  type="button"
+                  onClick={stop}
+                  aria-label="Stop generating"
+                  className="grid h-9 w-9 place-items-center rounded-full bg-linear-to-br from-violet-600 to-cyan-500 text-white transition"
+                >
+                  <Square size={14} fill="currentColor" />
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  disabled={!input.trim()}
+                  aria-label="Send message"
+                  className="grid h-9 w-9 place-items-center rounded-full bg-linear-to-br from-violet-600 to-cyan-500 text-white transition disabled:opacity-40"
+                >
+                  <Send size={16} />
+                </button>
+              )}
             </form>
           </motion.div>
         )}

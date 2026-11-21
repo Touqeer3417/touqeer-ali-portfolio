@@ -85,9 +85,16 @@ async def _stream_with_request_id(messages: list[dict], request_id: str):
     logging) runs even if the client disconnects mid-stream.
     """
     with use_request_id(request_id):
-        async with aclosing(stream_answer(messages)) as stream:
-            async for chunk in stream:
-                yield chunk
+        try:
+            async with aclosing(stream_answer(messages)) as stream:
+                async for chunk in stream:
+                    yield chunk
+        except asyncio.CancelledError:
+            # Starlette cancels the response task when the client disconnects
+            # (browser Stop, tab close, proxy abort). Cleanup already ran in the
+            # inner ``finally`` blocks; re-raise so cancellation propagates.
+            logger.info("chat stream cancelled by client request_id=%s", request_id)
+            raise
 
 
 @app.get("/health")
