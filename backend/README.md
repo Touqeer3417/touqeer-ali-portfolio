@@ -19,10 +19,11 @@ sparse index and document-version filtering.
 The chat endpoint remains `POST /chat` and streams plain text. Dense retrieval uses
 the configured Qdrant collection and existing embedding model. Dense and BM25 search
 run concurrently and are combined by LangChain's weighted reciprocal rank fusion.
-Cross-Encoder reranking is enabled by default with the configured
-`cross-encoder/ms-marco-MiniLM-L-6-v2` model. Install the optional model dependency
-from the backend directory with `python -m pip install -r requirements-reranker.txt`.
-Set `RERANKER_ENABLED=false` in `.env` to disable it. The model loads lazily once per
+Cross-Encoder reranking is **disabled by default** (`reranker_enabled = False` in
+`app/config.py`). To enable it, install the optional dependency with
+`python -m pip install -r requirements-reranker.txt` and set `RERANKER_ENABLED=true`
+in `.env`; it uses the configured `cross-encoder/ms-marco-MiniLM-L-6-v2` model. Measured
+note: the first request after a cold start paid about 20 s to load the model. The model loads lazily once per
 process; if loading or scoring fails, hybrid retrieval keeps its original result order.
 
 Run backend unit tests from this directory:

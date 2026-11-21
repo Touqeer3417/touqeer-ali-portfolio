@@ -3,3 +3,6 @@
 .rag-index/
 __pycache__/
 *.pyc
+
+# Evaluation virtual environment
+.venv-eval/

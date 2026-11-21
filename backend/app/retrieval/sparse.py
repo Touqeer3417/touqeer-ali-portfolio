@@ -19,6 +19,7 @@ from qdrant_client.http import models
 from app.config import settings
 from app.database import qdrant_client
 from app.ingestion.state import IndexSnapshot, read_snapshot, write_snapshot
+from app.latency import set_flag
 
 
 logger = logging.getLogger("rag")
@@ -186,6 +187,8 @@ class BM25Index:
                     retriever = BM25Retriever.from_documents(documents)
                     retriever.k = settings.bm25_top_k
                     self._retrievers[project_id] = TimedBM25Retriever(delegate=retriever)
+                    # Cold marker: this request paid for building the BM25 index.
+                    set_flag("bm25_index_built")
                     logger.info(
                         "rag_stage stage=bm25_index_load duration_ms=%.1f documents=%d project_id=%s",
                         (perf_counter() - started) * 1000,

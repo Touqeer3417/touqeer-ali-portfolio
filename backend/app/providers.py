@@ -6,6 +6,7 @@ from time import perf_counter
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 from app.config import settings
+from app.http_clients import openai_http_kwargs
 
 
 logger = logging.getLogger("rag")
@@ -23,6 +24,7 @@ def get_chat_model() -> ChatOpenAI:
         temperature=0.3,
         max_tokens=350,
         max_retries=2,
+        **openai_http_kwargs(),
     )
 
 
@@ -36,6 +38,7 @@ def get_embeddings() -> OpenAIEmbeddings:
         model=settings.embed_model,
         api_key=settings.openai_api_key,
         max_retries=2,
+        **openai_http_kwargs(),
     )
 
 

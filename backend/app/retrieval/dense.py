@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import logging
+from contextlib import contextmanager
 from time import perf_counter
-from typing import Any
+from typing import Any, Iterator
 
 from langchain_core.callbacks import (
     AsyncCallbackManagerForRetrieverRun,
@@ -20,6 +21,7 @@ from qdrant_client import models
 
 from app.config import settings
 from app.database import qdrant_client
+from app.embedding_cache import query_embedding_cache
 from app.latency import RequestLatency, current_request_latency, record_stage_for
 from app.providers import get_embeddings
 from app.retrieval.sparse import BM25Index, EmptyRetriever, get_bm25_index
@@ -35,10 +37,20 @@ class TimedEmbeddings(Embeddings):
         self.embeddings = embeddings
         self.latency_request = latency_request
 
+    def _cached(self, text: str) -> list[float] | None:
+        vector = query_embedding_cache.get(settings.embed_model, text)
+        if vector is not None and self.latency_request is not None:
+            self.latency_request.flags["embedding_cache_hit"] = True
+        return vector
+
     def embed_query(self, text: str) -> list[float]:
         started = perf_counter()
         try:
-            return self.embeddings.embed_query(text)
+            vector = self._cached(text)
+            if vector is None:
+                vector = self.embeddings.embed_query(text)
+                query_embedding_cache.put(settings.embed_model, text, vector)
+            return vector
         finally:
             duration_ms = (perf_counter() - started) * 1000
             record_stage_for(self.latency_request, "embedding_ms", duration_ms)
@@ -47,9 +59,14 @@ class TimedEmbeddings(Embeddings):
     async def aembed_query(self, text: str) -> list[float]:
         started = perf_counter()
         try:
-            if hasattr(self.embeddings, "aembed_query"):
-                return await self.embeddings.aembed_query(text)
-            return self.embeddings.embed_query(text)
+            vector = self._cached(text)
+            if vector is None:
+                if hasattr(self.embeddings, "aembed_query"):
+                    vector = await self.embeddings.aembed_query(text)
+                else:
+                    vector = self.embeddings.embed_query(text)
+                query_embedding_cache.put(settings.embed_model, text, vector)
+            return vector
         finally:
             duration_ms = (perf_counter() - started) * 1000
             record_stage_for(self.latency_request, "embedding_ms", duration_ms)
@@ -62,6 +79,28 @@ class TimedEmbeddings(Embeddings):
         if hasattr(self.embeddings, "aembed_documents"):
             return await self.embeddings.aembed_documents(texts)
         return self.embeddings.embed_documents(texts)
+
+
+@contextmanager
+def _vector_search_timer() -> Iterator[None]:
+    """Record vector_search_ms = (delegate call) - (query embedding inside it).
+
+    langchain-qdrant embeds the query and calls ``client.query_points`` in one
+    synchronous method, so the two cannot be timed separately without changing
+    the call. TimedEmbeddings already records embedding_ms during this window;
+    subtracting it leaves the Qdrant search, its network round trip and the
+    executor hop. The request is captured on entry (embedding may be recorded
+    from a worker thread).
+    """
+    request = current_request_latency()
+    embedded_before = request.values.get("embedding_ms", 0.0) if request else 0.0
+    started = perf_counter()
+    try:
+        yield
+    finally:
+        elapsed_ms = (perf_counter() - started) * 1000
+        embedded_ms = (request.values.get("embedding_ms", 0.0) - embedded_before) if request else 0.0
+        record_stage_for(request, "vector_search_ms", elapsed_ms - max(0.0, embedded_ms))
 
 
 def _normalize_documents(documents: list[Document], index: BM25Index) -> list[Document]:
@@ -144,7 +183,9 @@ class StableDenseRetriever(BaseRetriever):
     ) -> list[Document]:
         started = perf_counter()
         try:
-            return _normalize_documents(self.delegate.invoke(query), self.index)
+            with _vector_search_timer():
+                documents = self.delegate.invoke(query)
+            return _normalize_documents(documents, self.index)
         finally:
             logger.info("rag_stage stage=dense_retrieval duration_ms=%.1f", (perf_counter() - started) * 1000)
 
@@ -153,16 +194,37 @@ class StableDenseRetriever(BaseRetriever):
     ) -> list[Document]:
         started = perf_counter()
         try:
-            documents = await self.delegate.ainvoke(query)
+            with _vector_search_timer():
+                documents = await self.delegate.ainvoke(query)
             return _normalize_documents(documents, self.index)
         finally:
             logger.info("rag_stage stage=dense_retrieval duration_ms=%.1f", (perf_counter() - started) * 1000)
 
 
+# collection name -> client that already confirmed it exists. Only positive
+# answers are kept, so a missing collection is re-checked on every request.
+_confirmed_collections: dict[str, Any] = {}
+
+
+def _collection_exists(client: Any, name: str) -> bool:
+    """`collection_exists` with a cached positive answer (saves one round trip per request)."""
+    if _confirmed_collections.get(name) is client:
+        return True
+    if client.collection_exists(name):
+        _confirmed_collections[name] = client
+        return True
+    return False
+
+
+def reset_collection_cache() -> None:
+    """Forget confirmed collections (use after dropping or recreating one in-process)."""
+    _confirmed_collections.clear()
+
+
 def build_dense_retriever(index: BM25Index, project_id: str | None = None) -> BaseRetriever:
     """Build a LangChain Qdrant vector-store retriever over the existing collection."""
     client = qdrant_client()
-    if not client.collection_exists(settings.hybrid_collection):
+    if not _collection_exists(client, settings.hybrid_collection):
         return EmptyRetriever()
 
     vector_store = QdrantVectorStore(

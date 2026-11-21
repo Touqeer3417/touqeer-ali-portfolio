@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+import uuid
+from dataclasses import asdict, dataclass
 from unittest.mock import patch
 
 from langchain_core.documents import Document
@@ -19,6 +20,8 @@ class PipelineOutput:
     status: str = "complete"
     error: str | None = None
     retrieval_trace: dict | None = None
+    # Per-stage timings recorded by the production code (app.latency), in ms.
+    latency: dict | None = None
 
 
 async def run_existing_pipeline(user_input: str) -> PipelineOutput:
@@ -44,15 +47,24 @@ async def run_existing_pipeline(user_input: str) -> PipelineOutput:
         return documents
 
     messages = [{"role": "user", "content": user_input}]
-    with patch.object(rag, "aretrieve_documents", side_effect=capture_retrieval):
+    request_id = uuid.uuid4().hex[:16]
+    from app.latency import get_record, use_request_id
+
+    with use_request_id(request_id), patch.object(rag, "aretrieve_documents", side_effect=capture_retrieval):
         response_parts = [part async for part in rag.stream_answer(messages)]
+
+    # Timings come from the production code itself; the id guards against ever
+    # attaching a previous request's record to this sample.
+
+    record = get_record(request_id)
+    latency = asdict(record) if record is not None else None
 
     response = "".join(response_parts).strip()
     contexts = [document.page_content for document in captured_documents]
     if response == GENERATION_ERROR:
-        return PipelineOutput(response, contexts, "failed", "Existing RAG generation returned its error fallback", captured_trace)
+        return PipelineOutput(response, contexts, "failed", "Existing RAG generation returned its error fallback", captured_trace, latency)
     if not contexts or response == NO_CONTEXT_RESPONSE:
-        return PipelineOutput(response, contexts, "incomplete", "Existing retriever returned no usable context", captured_trace)
+        return PipelineOutput(response, contexts, "incomplete", "Existing retriever returned no usable context", captured_trace, latency)
     if not response:
-        return PipelineOutput("", contexts, "failed", "Existing RAG pipeline returned an empty response", captured_trace)
-    return PipelineOutput(response, contexts, retrieval_trace=captured_trace)
+        return PipelineOutput("", contexts, "failed", "Existing RAG pipeline returned an empty response", captured_trace, latency)
+    return PipelineOutput(response, contexts, retrieval_trace=captured_trace, latency=latency)

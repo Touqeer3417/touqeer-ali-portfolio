@@ -19,7 +19,7 @@ from pydantic import ConfigDict, PrivateAttr
 
 from app.config import settings
 from app.retrieval.dense import build_dense_retriever
-from app.retrieval.document_awareness import resolve_project
+from app.retrieval.document_awareness import get_earlier_user_turns, plan_scope
 from app.retrieval.reranker import rerank_documents
 from app.retrieval.sparse import get_bm25_index, get_bm25_retriever
 from app.retrieval.trace import set_retrieval_trace
@@ -107,6 +107,15 @@ def _build_ensemble(project_id: str | None = None) -> TimedEnsembleRetriever:
     )
 
 
+def _scope_stats(ensemble: Any, reason: str, fallback: bool) -> dict[str, Any]:
+    """Candidate counts plus why the search was (not) restricted to one project."""
+    return {
+        **getattr(ensemble, "_candidate_stats", {}),
+        "scope_reason": reason,
+        "scope_fallback": fallback,
+    }
+
+
 class HybridRRFRetriever(BaseRetriever):
     """Apply LangChain EnsembleRetriever's weighted reciprocal rank fusion."""
 
@@ -139,7 +148,7 @@ class HybridRRFRetriever(BaseRetriever):
         documents: list[Document],
         *,
         project: tuple[str, str] | None = None,
-        candidate_stats: dict[str, int] | None = None,
+        candidate_stats: dict[str, Any] | None = None,
     ) -> list[Document]:
         # Retriever instances may return cached BM25 Document objects. Copy their
         # metadata before attaching request-specific ranks or reranker scores.
@@ -205,10 +214,21 @@ class HybridRRFRetriever(BaseRetriever):
         started = perf_counter()
         set_retrieval_trace(None)
         index = get_bm25_index()
-        project = resolve_project(query, index.snapshot().documents)
+        plan = plan_scope(query, get_earlier_user_turns(), index.snapshot().documents)
+        project, fallback = plan.project, False
         ensemble = _build_ensemble(project_id=project[0] if project else None)
-        documents = ensemble.invoke(query)
-        result = self._finish(query, documents, project=project, candidate_stats=getattr(ensemble, "_candidate_stats", {}))
+        documents = ensemble.invoke(plan.query)
+        if project and not documents:
+            # Scoped search found nothing: retry once without the project filter.
+            project, fallback = None, True
+            ensemble = _build_ensemble(project_id=None)
+            documents = ensemble.invoke(plan.query)
+        result = self._finish(
+            plan.query,
+            documents,
+            project=project,
+            candidate_stats=_scope_stats(ensemble, plan.reason, fallback),
+        )
         logger.info("rag_stage stage=hybrid_retrieval duration_ms=%.1f", (perf_counter() - started) * 1000)
         return result
 
@@ -218,11 +238,22 @@ class HybridRRFRetriever(BaseRetriever):
         started = perf_counter()
         set_retrieval_trace(None)
         index = get_bm25_index()
-        project = resolve_project(query, index.snapshot().documents)
+        plan = plan_scope(query, get_earlier_user_turns(), index.snapshot().documents)
+        project, fallback = plan.project, False
         ensemble = _build_ensemble(project_id=project[0] if project else None)
         # EnsembleRetriever.ainvoke concurrently awaits each retriever's ainvoke.
-        documents = await ensemble.ainvoke(query)
-        result = self._finish(query, documents, project=project, candidate_stats=getattr(ensemble, "_candidate_stats", {}))
+        documents = await ensemble.ainvoke(plan.query)
+        if project and not documents:
+            # Scoped search found nothing: retry once without the project filter.
+            project, fallback = None, True
+            ensemble = _build_ensemble(project_id=None)
+            documents = await ensemble.ainvoke(plan.query)
+        result = self._finish(
+            plan.query,
+            documents,
+            project=project,
+            candidate_stats=_scope_stats(ensemble, plan.reason, fallback),
+        )
         logger.info("rag_stage stage=hybrid_retrieval duration_ms=%.1f", (perf_counter() - started) * 1000)
         return result
 

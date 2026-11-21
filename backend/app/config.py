@@ -39,6 +39,22 @@ class Settings(BaseSettings):
     # Qdrant Reciprocal Rank Fusion
     rrf_k: int = 2
 
+    # Seconds idle upstream connections stay open (httpx default is 5). 0 = library default.
+    http_keepalive_expiry: float = Field(default=60.0, ge=0.0)
+
+    # Bounded LRU of query embeddings (0 disables).
+    embedding_cache_size: int = Field(default=256, ge=0)
+
+    # Background warm-up at server start (BM25 prebuild, starter-question embeddings, connections).
+    warmup_enabled: bool = True
+    warmup_llm: bool = True  # one 1-token completion; set false to avoid any token spend
+    warmup_queries: list[str] = [
+        "What has Touqeer built?",
+        "Can he build a RAG chatbot for my business?",
+        "Touqeer ki skills kya hain?",
+        "How can I contact him?",
+    ]
+
     # Existing API settings
     shared_secret: str = Field(min_length=24)
     top_k: int = 5

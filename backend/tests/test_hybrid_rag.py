@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from langchain_core.callbacks import AsyncCallbackManagerForRetrieverRun, CallbackManagerForRetrieverRun
 from langchain_core.documents import Document
@@ -251,7 +251,12 @@ class HybridRagTests(unittest.IsolatedAsyncioTestCase):
         ensemble = TimedEnsembleRetriever(
             retrievers=[dense, sparse], weights=[0.5, 0.5], c=2, id_key="chunk_id"
         )
-        with patch("app.retrieval.hybrid._build_ensemble", return_value=ensemble), patch(
+        # Hermetic: do not read the gitignored BM25 snapshot or fall back to live Qdrant.
+        empty_index = MagicMock()
+        empty_index.snapshot.return_value.documents = []
+        with patch("app.retrieval.hybrid.get_bm25_index", return_value=empty_index), patch(
+            "app.retrieval.hybrid._build_ensemble", return_value=ensemble
+        ), patch(
             "app.retrieval.hybrid.rerank_documents", side_effect=lambda query, docs: docs
         ):
             result = await HybridRRFRetriever().ainvoke("shared")

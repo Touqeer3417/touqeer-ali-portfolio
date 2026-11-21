@@ -10,7 +10,7 @@ from time import perf_counter
 from langchain_core.documents import Document
 
 from app.config import settings
-from app.latency import record_stage
+from app.latency import record_stage, set_flag
 
 
 logger = logging.getLogger("rag")
@@ -24,6 +24,8 @@ def _cross_encoder():
         raise RuntimeError(
             "RERANKER_ENABLED=true requires the optional backend/requirements-reranker.txt package."
         ) from exc
+    # Runs only on the lru_cache miss: this request paid for loading the model.
+    set_flag("cross_encoder_cold")
     return CrossEncoder(settings.reranker_model)
 
 

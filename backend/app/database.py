@@ -7,6 +7,7 @@ from functools import lru_cache
 from qdrant_client import QdrantClient
 
 from app.config import settings
+from app.http_clients import qdrant_http_kwargs
 
 
 @lru_cache(maxsize=1)
@@ -16,4 +17,5 @@ def qdrant_client() -> QdrantClient:
         url=settings.qdrant_url,
         api_key=settings.qdrant_api_key,
         timeout=30,
+        **qdrant_http_kwargs(),
     )

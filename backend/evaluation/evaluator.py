@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import asyncio
 import json
 import logging
@@ -16,11 +17,20 @@ from evaluation.report import build_report, save_report
 logger = logging.getLogger("rag_evaluation")
 
 
-async def evaluate_dataset() -> dict[str, Any]:
-    """Evaluate cases sequentially to isolate capture and avoid API bursts."""
+async def evaluate_dataset(warmup: bool = False) -> dict[str, Any]:
+    """Evaluate cases sequentially to isolate capture and avoid API bursts.
+
+    With ``warmup`` one throwaway pipeline call runs first (not scored, not in
+    the report) so model/index/connection start-up cost does not land on the
+    first real sample's latency.
+    """
     cases = load_dataset()
     results: list[dict[str, Any]] = []
     metrics = None
+
+    if warmup:
+        logger.info("Warm-up request (excluded from results): %s", cases[0].case_id)
+        await run_existing_pipeline(cases[0].user_input)
 
     for index, case in enumerate(cases, start=1):
         logger.info("Evaluating case %d/%d: %s", index, len(cases), case.case_id)
@@ -34,6 +44,7 @@ async def evaluate_dataset() -> dict[str, Any]:
                 "retrieval_trace": output.retrieval_trace,
                 "response": output.response,
                 "status": output.status,
+                "latency_ms": output.latency,
                 "metric_scores": {},
                 "metric_errors": {},
             }
@@ -70,18 +81,26 @@ async def evaluate_dataset() -> dict[str, Any]:
                 "response": None,
                 "status": "failed",
                 "error": f"{type(exc).__name__}: {exc}",
+                "latency_ms": None,
                 "metric_scores": {},
                 "metric_errors": {},
             })
 
-    return build_report(results)
+    return build_report(results, warmup=warmup)
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--warmup",
+        action="store_true",
+        help="Run one unscored request first so the first sample is not a cold start.",
+    )
+    args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
-    report = asyncio.run(evaluate_dataset())
+    report = asyncio.run(evaluate_dataset(warmup=args.warmup))
     path = save_report(report)
-    print(json.dumps({"report": str(path), "total_evaluation_samples": report["total_evaluation_samples"], "metric_summary": report["metric_summary"], "failed_or_incomplete_count": len(report["failed_or_incomplete_samples"])}, indent=2))
+    print(json.dumps({"report": str(path), "total_evaluation_samples": report["total_evaluation_samples"], "metric_summary": report["metric_summary"], "latency_summary": report["latency_summary"], "failed_or_incomplete_count": len(report["failed_or_incomplete_samples"])}, indent=2))
 
 
 if __name__ == "__main__":

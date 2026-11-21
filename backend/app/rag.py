@@ -15,9 +15,18 @@ from langchain_core.messages import (
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 from app.database import qdrant_client
-from app.latency import begin_request, finish_request, mark_first_token, record_stage, reset_request
+from app.latency import (
+    begin_request,
+    finish_request,
+    mark_first_token,
+    mark_llm_start,
+    record_stage,
+    reset_request,
+    timer,
+)
 from app.providers import get_chat_model, embed_documents
 from app.retrieval import get_hybrid_retriever
+from app.retrieval.document_awareness import reset_earlier_user_turns, set_earlier_user_turns
 
 
 logger = logging.getLogger("rag")
@@ -100,6 +109,18 @@ def retrieval_query(messages: list[dict]) -> str:
     ]
 
     return " ".join(user_messages[-2:])
+
+
+def split_conversation(messages: list[dict]) -> tuple[str, list[str]]:
+    """Return (current question, earlier user turns) from the API messages."""
+    user_messages = [
+        message["content"].strip()
+        for message in messages
+        if message["role"] == "user" and message["content"].strip()
+    ]
+    if not user_messages:
+        return "", []
+    return user_messages[-1], user_messages[:-1]
 
 
 def retrieve_documents(query: str):
@@ -208,14 +229,18 @@ async def stream_answer(messages: list[dict]) -> AsyncIterator[str]:
     latency_request, latency_token = begin_request()
     first_token_logged = False
     generated_parts: list[str] = []
+    scope_token = None
     try:
-        query = retrieval_query(messages)
+        # The retriever decides, per question, whether an earlier turn's project
+        # still applies (see retrieval.document_awareness.plan_scope).
+        query, earlier_user_turns = split_conversation(messages)
 
         if not query:
             yield "Please send a question about Touqeer's portfolio."
             return
 
         # 1. Retrieve portfolio documents.
+        scope_token = set_earlier_user_turns(earlier_user_turns)
         retrieval_started = perf_counter()
         documents = await aretrieve_documents(query)
         retrieval_ms = (perf_counter() - retrieval_started) * 1000
@@ -229,14 +254,17 @@ async def stream_answer(messages: list[dict]) -> AsyncIterator[str]:
             )
             return
 
-        # 2. Preserve source filenames in the prompt.
-        context, sources = format_context(documents)
+        # The cached client is fetched outside the prompt timer: first use builds
+        # the OpenAI client, which is not prompt-construction work.
+        chat_model = get_chat_model()
 
-        # 3. Build conversation history.
-        history = build_history(messages)
-
-        # 4. Connect the reusable prompt to the cached ChatOpenAI client.
-        chain = PROMPT | get_chat_model()
+        # 2-4. Prompt construction: context formatting (preserving source
+        # filenames), conversation history and chain assembly. Template rendering
+        # itself runs lazily inside chain.astream, so it is counted under llm_ms.
+        with timer("prompt_build_ms"):
+            context, sources = format_context(documents)
+            history = build_history(messages)
+            chain = PROMPT | chat_model
 
         # 6. Stream the answer to the existing FastAPI endpoint.
         stream = chain.astream(
@@ -248,6 +276,7 @@ async def stream_answer(messages: list[dict]) -> AsyncIterator[str]:
         )
 
         generation_started = perf_counter()
+        mark_llm_start()
         try:
             async for chunk in stream:
                 content = chunk.content
@@ -298,6 +327,8 @@ async def stream_answer(messages: list[dict]) -> AsyncIterator[str]:
             "question. Please try again in a moment."
         )
     finally:
+        if scope_token is not None:
+            reset_earlier_user_turns(scope_token)
         try:
             finish_request(latency_request)
         except Exception:

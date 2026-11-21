@@ -16,6 +16,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  if (!API) return new Response("server_not_configured", { status: 500 });
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
 
   let upstream: Response;
@@ -29,6 +30,8 @@ export async function POST(req: NextRequest) {
       },
       body: await req.text(),
       cache: "no-store",
+      // Fail fast instead of hanging until the platform kills the function.
+      signal: AbortSignal.timeout(55_000),
     });
   } catch {
     return new Response("upstream_unreachable", { status: 502 });
