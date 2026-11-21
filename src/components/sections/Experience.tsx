@@ -72,13 +72,13 @@ export function Experience() {
 
               {experience.map((item, index) => (
                 <FadeIn key={item.title} delay={index * 0.08}>
-                  <div className="relative grid gap-[0.9rem] border-b border-[var(--line)] py-[1.575rem] pl-[1.575rem] sm:grid-cols-[135px_1fr] sm:pl-[1.575rem]">
+                  <div className="relative grid gap-[0.9rem] border-b border-[var(--line)] py-[1.575rem] pl-[1.575rem] sm:grid-cols-[8.4375rem_1fr] sm:pl-[1.575rem]">
                     <span
                       className="absolute left-0 top-8 h-2 w-2 rounded-full border border-[var(--background)] bg-[var(--accent)] shadow-[0_0_12px_var(--accent-soft)]"
                       aria-hidden="true"
                     />
 
-                    <div className="font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--body-copy)]">
+                    <div className="font-mono text-[0.75rem] uppercase tracking-[0.16em] text-[var(--body-copy)]">
                       {item.period}
                     </div>
 
@@ -103,7 +103,7 @@ export function Experience() {
 
           <FadeIn className="lg:pt-[5.4rem]">
             <aside className="rounded-[1.8rem] border border-[var(--line)] bg-[var(--panel)] p-[1.575rem] sm:p-[1.8rem]">
-              <div className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--accent)]">
+              <div className="font-mono text-[0.75rem] uppercase tracking-[0.18em] text-[var(--accent)]">
                 Currently exploring
               </div>
 
@@ -113,7 +113,7 @@ export function Experience() {
                     key={item}
                     className="flex items-center gap-[0.9rem] border-b border-[var(--line)] pb-[1.125rem] last:border-b-0 last:pb-0"
                   >
-                    <span className="font-mono text-[12px] text-[var(--body-copy)]">
+                    <span className="font-mono text-[0.75rem] text-[var(--body-copy)]">
                       0{index + 1}
                     </span>
 

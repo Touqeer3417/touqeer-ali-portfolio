@@ -130,7 +130,7 @@ export function Navbar() {
             className="lg:hidden"
           >
             <Container className="mt-2">
-              <div className="overflow-hidden rounded-[28px] border border-(--line) bg-(--nav) p-3 shadow-2xl backdrop-blur-xl">
+              <div className="overflow-hidden rounded-[1.75rem] border border-(--line) bg-(--nav) p-3 shadow-2xl backdrop-blur-xl">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}

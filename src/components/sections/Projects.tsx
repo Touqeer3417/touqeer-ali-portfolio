@@ -19,7 +19,7 @@ export function Projects() {
               description="Each project explains the problem, engineering decisions, architecture and outcome — because the proof is in how the system works."
             />
 
-            <div className="max-w-[19rem] font-mono text-[11px] uppercase leading-[1.7] tracking-[0.15em] text-[var(--body-copy)]">
+            <div className="max-w-[19rem] font-mono text-[0.6875rem] uppercase leading-[1.7] tracking-[0.15em] text-[var(--body-copy)]">
               03 featured builds · RAG · agents · automation · full-stack
             </div>
           </div>

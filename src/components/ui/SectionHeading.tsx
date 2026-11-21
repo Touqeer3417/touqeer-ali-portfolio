@@ -15,7 +15,7 @@ export function SectionHeading({
 }) {
   return (
     <div className={cn("max-w-[42rem]", className)}>
-      <div className="mb-[1.125rem] flex items-center gap-[0.675rem] font-mono text-[12px] uppercase tracking-[0.2em] text-[var(--body-copy)]">
+      <div className="mb-[1.125rem] flex items-center gap-[0.675rem] font-mono text-[0.75rem] uppercase tracking-[0.2em] text-[var(--body-copy)]">
         <span className="h-px w-[2.025rem] bg-[var(--accent)]" />
         {eyebrow}
       </div>

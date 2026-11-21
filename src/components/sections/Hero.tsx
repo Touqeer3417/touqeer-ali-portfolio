@@ -162,7 +162,7 @@ export function Hero() {
       />
 
       <Container className="relative flex min-h-[calc(100svh-6rem)] flex-col justify-between pb-6 sm:pb-8">
-        <div className="grid flex-1 items-start gap-8 pt-1 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)] xl:items-stretch xl:gap-12">
+        <div className="grid flex-1 items-start gap-8 pt-1 xl:grid-cols-[minmax(0,1.35fr)_minmax(20rem,0.65fr)] xl:items-stretch xl:gap-12">
           {/* =====================================
               LEFT CONTENT
           ====================================== */}
@@ -170,7 +170,7 @@ export function Hero() {
             {/* Availability Badge */}
             <div
               data-hero-fade
-              className="mb-5 inline-flex items-center gap-2 rounded-full border border-(--line) bg-(--panel) px-3.5 py-2 font-mono text-[12px] uppercase tracking-[0.16em] text-(--body-copy) backdrop-blur"
+              className="mb-5 inline-flex items-center gap-2 rounded-full border border-(--line) bg-(--panel) px-3.5 py-2 font-mono text-[0.75rem] uppercase tracking-[0.16em] text-(--body-copy) backdrop-blur"
             >
               <span className="relative flex h-2 w-2">
                 <span
@@ -243,7 +243,7 @@ export function Hero() {
             {/* Technologies */}
             <div
               data-hero-fade
-              className="mt-8 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[12px] uppercase tracking-[0.16em] text-(--body-copy)"
+              className="mt-8 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[0.75rem] uppercase tracking-[0.16em] text-(--body-copy)"
             >
               <span>RAG</span>
               <span>•</span>
@@ -295,7 +295,7 @@ export function Hero() {
             />
 
             {/* HUD */}
-            <div className="pointer-events-none absolute inset-x-[6%] top-[6%] z-20 flex items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.18em] text-(--body-copy) sm:text-[12px]">
+            <div className="pointer-events-none absolute inset-x-[6%] top-[6%] z-20 flex items-center justify-between gap-4 font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-(--body-copy) sm:text-[0.75rem]">
               <span className="rounded-full border border-(--line) bg-(--nav) px-3 py-1.5 backdrop-blur">
                 Live system graph
               </span>
@@ -306,7 +306,7 @@ export function Hero() {
             </div>
 
             {/* Bottom HUD */}
-            <div className="pointer-events-none absolute bottom-[7%] left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-(--line) bg-(--nav) px-4 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-(--body-copy) backdrop-blur sm:text-[12px]">
+            <div className="pointer-events-none absolute bottom-[7%] left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-(--line) bg-(--nav) px-4 py-2 font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-(--body-copy) backdrop-blur sm:text-[0.75rem]">
               Query → Retrieve → Reason → Act
             </div>
           </div>

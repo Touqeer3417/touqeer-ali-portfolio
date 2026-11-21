@@ -26,7 +26,7 @@ export function Services() {
               key={service.number}
               delay={Math.min(index * 0.04, 0.15)}
             >
-              <article className="service-row group grid gap-[0.9rem] border-b border-[var(--line)] py-[1.575rem] transition sm:grid-cols-[72px_1fr_auto] sm:items-center sm:py-[2.025rem]">
+              <article className="service-row group grid gap-[0.9rem] border-b border-[var(--line)] py-[1.575rem] transition sm:grid-cols-[4.5rem_1fr_auto] sm:items-center sm:py-[2.025rem]">
                 <span className="font-mono text-xs tracking-[0.2em] text-[var(--accent)]">
                   {service.number}
                 </span>
