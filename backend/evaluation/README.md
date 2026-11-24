@@ -15,6 +15,11 @@ change retrieval, or replace the production prompt/generation flow.
 - `report.py` — summarizes valid scores and saves timestamped JSON reports.
 - `datasets/evaluation_dataset.json` — manually verified portfolio questions and
   references based on `backend/knowledge/*.md`.
+- `datasets/evaluation_dataset_extended.json` — the 12 original cases (unchanged, first)
+  plus out-of-scope, prompt-injection, multi-project, list-completeness and Roman Urdu
+  cases, all grounded in `backend/knowledge/*.md`. Run it with
+  `python -m evaluation.evaluator --warmup --dataset evaluation\datasets\evaluation_dataset_extended.json`.
+  Scores from different datasets are not directly comparable; compare like with like.
 - `tests/test_evaluation.py` — offline tests using mocks; no API calls.
 - `reports/` — generated reports are written here when the evaluator runs.
 

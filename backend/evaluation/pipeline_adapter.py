@@ -49,8 +49,14 @@ async def run_existing_pipeline(user_input: str) -> PipelineOutput:
     messages = [{"role": "user", "content": user_input}]
     request_id = uuid.uuid4().hex[:16]
     from app.latency import get_record, use_request_id
+    from app.response_cache import bypass_response_cache
 
-    with use_request_id(request_id), patch.object(rag, "aretrieve_documents", side_effect=capture_retrieval):
+    # Every sample must exercise real retrieval and generation: the production
+    # response cache would otherwise answer a repeated question from memory and
+    # report it with no retrieval or LLM time, skewing scores and latency.
+    with use_request_id(request_id), bypass_response_cache(), patch.object(
+        rag, "aretrieve_documents", side_effect=capture_retrieval
+    ):
         response_parts = [part async for part in rag.stream_answer(messages)]
 
     # Timings come from the production code itself; the id guards against ever

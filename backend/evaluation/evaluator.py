@@ -6,6 +6,7 @@ import argparse
 import asyncio
 import json
 import logging
+from pathlib import Path
 from typing import Any
 
 from evaluation.dataset import load_dataset
@@ -17,14 +18,14 @@ from evaluation.report import build_report, save_report
 logger = logging.getLogger("rag_evaluation")
 
 
-async def evaluate_dataset(warmup: bool = False) -> dict[str, Any]:
+async def evaluate_dataset(warmup: bool = False, dataset_path: Path | None = None) -> dict[str, Any]:
     """Evaluate cases sequentially to isolate capture and avoid API bursts.
 
     With ``warmup`` one throwaway pipeline call runs first (not scored, not in
     the report) so model/index/connection start-up cost does not land on the
     first real sample's latency.
     """
-    cases = load_dataset()
+    cases = load_dataset(dataset_path) if dataset_path else load_dataset()
     results: list[dict[str, Any]] = []
     metrics = None
 
@@ -96,9 +97,16 @@ def main() -> None:
         action="store_true",
         help="Run one unscored request first so the first sample is not a cold start.",
     )
+    parser.add_argument(
+        "--dataset",
+        type=Path,
+        default=None,
+        help="Dataset JSON to evaluate (default: datasets/evaluation_dataset.json). "
+        "Use datasets/evaluation_dataset_extended.json for the larger set.",
+    )
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
-    report = asyncio.run(evaluate_dataset(warmup=args.warmup))
+    report = asyncio.run(evaluate_dataset(warmup=args.warmup, dataset_path=args.dataset))
     path = save_report(report)
     print(json.dumps({"report": str(path), "total_evaluation_samples": report["total_evaluation_samples"], "metric_summary": report["metric_summary"], "latency_summary": report["latency_summary"], "failed_or_incomplete_count": len(report["failed_or_incomplete_samples"])}, indent=2))
 

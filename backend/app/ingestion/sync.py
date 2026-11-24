@@ -14,7 +14,7 @@ from qdrant_client.models import Distance, VectorParams
 from app.config import settings
 from app.database import qdrant_client
 from app.ingestion.loader import load_markdown_documents
-from app.ingestion.splitter import INDEX_SCHEMA_VERSION, split_source
+from app.ingestion.splitter import INDEX_SCHEMA_VERSION, chunking_fingerprint, split_source
 from app.ingestion.state import IndexSnapshot, read_snapshot, write_snapshot
 from app.providers import get_embeddings
 from app.retrieval.dense import TimedEmbeddings
@@ -189,8 +189,12 @@ def sync_knowledge_base() -> dict[str, Any]:
 
     for source, loaded in corpus.sources.items():
         current_chunks = previous_docs.get(source, [])
+        # Chunks built with other chunk settings (or before settings were recorded)
+        # are stale even when the source file itself is unchanged.
+        fingerprint = chunking_fingerprint()
         metadata_schema_current = not current_chunks or all(
             document.metadata.get("index_schema_version") == INDEX_SCHEMA_VERSION
+            and all(document.metadata.get(key) == value for key, value in fingerprint.items())
             for document in current_chunks
         )
         if (

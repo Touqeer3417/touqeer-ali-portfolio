@@ -16,6 +16,7 @@ from slowapi.util import get_remote_address
 from app.config import settings
 from app.latency import get_record, public_latency, use_request_id
 from app.rag import stream_answer
+from app.response_cache import response_cache
 from app.warmup import warm_up
 
 
@@ -174,3 +175,23 @@ def latency(
     if record is None:
         raise HTTPException(status_code=404, detail="Latency record not found")
     return {"latency_ms": public_latency(record)}
+
+
+@app.get("/cache/stats")
+@limiter.limit("60/minute")
+def cache_stats(
+    request: Request,
+    x_api_key: str = Header(default=""),
+) -> dict[str, object]:
+    """Return response-cache counters for this worker (same secret as /chat).
+
+    Counters are per process and reset on restart, so with several workers this
+    reports the one that served the request. No visitor content is exposed.
+    """
+    if not hmac.compare_digest(
+        x_api_key.encode("utf-8"),
+        settings.shared_secret.encode("utf-8"),
+    ):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    return {"response_cache": response_cache.stats()}

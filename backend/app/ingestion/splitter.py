@@ -16,6 +16,16 @@ from app.ingestion.metadata import ContentSegment, content_segments, section_hea
 INDEX_SCHEMA_VERSION = 2
 
 
+def chunking_fingerprint() -> dict[str, int | bool]:
+    """Chunking settings an indexed chunk was built with (stored in chunk metadata)."""
+    return {
+        "chunk_size": settings.chunk_size,
+        "chunk_overlap": settings.chunk_overlap,
+        "min_chunk_chars": settings.min_chunk_chars,
+        "chunk_context_prefix": settings.chunk_context_prefix,
+    }
+
+
 def make_splitter() -> RecursiveCharacterTextSplitter:
     """Create the configured recursive character splitter."""
     if settings.chunk_overlap >= settings.chunk_size:
@@ -26,6 +36,55 @@ def make_splitter() -> RecursiveCharacterTextSplitter:
         add_start_index=True,
         separators=["\n\n", "\n", " ", ""],
     )
+
+
+def context_prefix(source_filename: str | None, project_name: str | None, section: str | None) -> str:
+    """Human-readable location line stored at the top of a chunk (BM25 and embeddings see it)."""
+    parts = []
+    if source_filename:
+        parts.append(f"Source: {source_filename.rsplit('.', 1)[0]}")
+    if project_name:
+        parts.append(f"Project: {project_name}")
+    if section:
+        parts.append(f"Section: {section}")
+    return f"[{' | '.join(parts)}]\n" if parts else ""
+
+
+def absorb_small_chunks(chunks: list[Document], min_chars: int) -> list[Document]:
+    """Remove chunks too small to be useful retrieval units.
+
+    A tiny chunk already contained in its neighbour (the splitter's overlap) is
+    dropped; otherwise it is merged into the neighbour. A lone tiny chunk that is
+    only Markdown headings carries no facts and is dropped.
+    """
+    if min_chars <= 0:
+        return chunks
+    result = list(chunks)
+    i = 0
+    while i < len(result):
+        chunk = result[i]
+        text = chunk.page_content.strip()
+        if len(text) >= min_chars:
+            i += 1
+            continue
+        if len(result) == 1:
+            lines = [line.strip() for line in text.splitlines() if line.strip()]
+            if all(line.startswith("#") for line in lines):
+                result.pop(i)
+            else:
+                i += 1
+            continue
+        following = i + 1 < len(result)
+        neighbour = result[i + 1] if following else result[i - 1]
+        if text not in neighbour.page_content:
+            if following:
+                neighbour.page_content = f"{text}\n\n{neighbour.page_content}"
+                if "start_index" in chunk.metadata:
+                    neighbour.metadata["start_index"] = chunk.metadata["start_index"]
+            else:
+                neighbour.page_content = f"{neighbour.page_content}\n\n{text}"
+        result.pop(i)
+    return result
 
 
 def split_source(source: LoadedSource) -> list[Document]:
@@ -52,7 +111,9 @@ def split_source(source: LoadedSource) -> list[Document]:
                 } if segment.project_id else {}),
             },
         )
-        chunks = splitter.split_documents([segment_document])
+        chunks = absorb_small_chunks(
+            splitter.split_documents([segment_document]), settings.min_chunk_chars
+        )
         chunked_segments.append((segment, segment_text, chunks))
 
     total_chunks = sum(len(chunks) for _, _, chunks in chunked_segments)
@@ -61,15 +122,18 @@ def split_source(source: LoadedSource) -> list[Document]:
         for chunk in chunks:
             local_start = int(chunk.metadata.get("start_index", 0))
             absolute_start = segment.start + local_start
-            content_hash = hashlib.sha256(chunk.page_content.encode("utf-8")).hexdigest()
+            source_filename = source.document.metadata.get("source_filename") or source.document.metadata.get("file_name")
+            heading = section_heading(segment_text, local_start, segment.project_name)
+            text = chunk.page_content
+            if settings.chunk_context_prefix:
+                text = context_prefix(source_filename, segment.project_name, heading) + text
+            content_hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
             metadata = {
                 **chunk.metadata,
-                "source_filename": source.document.metadata.get("source_filename")
-                or source.document.metadata.get("file_name"),
-                "section_heading": section_heading(
-                    segment_text, local_start, segment.project_name
-                ),
+                "source_filename": source_filename,
+                "section_heading": heading,
                 "index_schema_version": INDEX_SCHEMA_VERSION,
+                **chunking_fingerprint(),
                 "chunk_id": str(
                     uuid5(
                         UUID(document_id),
@@ -80,7 +144,7 @@ def split_source(source: LoadedSource) -> list[Document]:
                 "total_chunks": total_chunks,
                 "start_index": absolute_start,
             }
-            output.append(Document(page_content=chunk.page_content, metadata=metadata))
+            output.append(Document(page_content=text, metadata=metadata))
             chunk_index += 1
     return output
 

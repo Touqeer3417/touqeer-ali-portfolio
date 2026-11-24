@@ -31,6 +31,7 @@ from langchain_core.outputs import ChatGeneration, ChatGenerationChunk, ChatResu
 from app import rag
 from app.config import settings
 from app.main import app
+from app.response_cache import response_cache
 
 
 class FakeStreamingModel(BaseChatModel):
@@ -91,6 +92,9 @@ class StreamAnswerTests(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self) -> None:
         self.state: dict[str, Any] = {}
         self.patches: tuple = ()
+        # Every test here drives the model through the same question; a cached
+        # answer would short-circuit the stream being asserted on.
+        response_cache.clear()
 
     async def asyncTearDown(self) -> None:
         for p in self.patches:

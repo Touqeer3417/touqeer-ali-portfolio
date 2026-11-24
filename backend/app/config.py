@@ -45,6 +45,12 @@ class Settings(BaseSettings):
     # Bounded LRU of query embeddings (0 disables).
     embedding_cache_size: int = Field(default=256, ge=0)
 
+    # Bounded LRU of complete answers to first-turn questions (0 disables).
+    # Keys carry a knowledge-base fingerprint, so re-indexing retires entries
+    # regardless of the TTL; the TTL only bounds how long an answer is reused.
+    response_cache_size: int = Field(default=256, ge=0)
+    response_cache_ttl_seconds: float = Field(default=1800.0, ge=0.0)
+
     # Background warm-up at server start (BM25 prebuild, starter-question embeddings, connections).
     warmup_enabled: bool = True
     warmup_llm: bool = True  # one 1-token completion; set false to avoid any token spend
@@ -63,6 +69,12 @@ class Settings(BaseSettings):
     knowledge_dir: Path = APP_DIR.parent / "knowledge"
     chunk_size: int = Field(default=800, ge=100)
     chunk_overlap: int = Field(default=120, ge=0)
+    # Chunks shorter than this (title-only or overlap leftovers) are merged into a
+    # neighbour or dropped, so they cannot take a top-k slot. 0 disables.
+    min_chunk_chars: int = Field(default=100, ge=0)
+    # Prefix every stored chunk with its file, project and section so continuation
+    # chunks stay retrievable by topic words (e.g. "services") they do not repeat.
+    chunk_context_prefix: bool = True
     ingestion_batch_size: int = Field(default=64, ge=1)
     bm25_index_path: Path = APP_DIR.parent / ".rag-index" / "bm25-documents.json"
 

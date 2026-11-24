@@ -28,6 +28,7 @@ from app.latency import (
 )
 from app.main import app
 from app.rag import stream_answer
+from app.response_cache import response_cache
 from app.retrieval.dense import _vector_search_timer
 from evaluation.report import build_report
 
@@ -87,6 +88,11 @@ class TimerTests(unittest.TestCase):
 
 
 class PipelineTimingTests(unittest.TestCase):
+    def setUp(self) -> None:
+        # Both tests below ask the same question; each must measure a real
+        # retrieval and generation run rather than hit the response cache.
+        response_cache.clear()
+
     @staticmethod
     def _patches():
         class FakeChain:

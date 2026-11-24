@@ -16,10 +16,16 @@ from app.latency import (
     reset_request,
 )
 from app.rag import stream_answer
+from app.response_cache import response_cache
 from langchain_core.documents import Document
 
 
 class LatencyMonitoringTests(unittest.TestCase):
+    def setUp(self) -> None:
+        # These tests assert retrieval and generation actually ran, so they must
+        # not be served from the response cache by an earlier test.
+        response_cache.clear()
+
     def test_request_timing_records_stages_without_reexecuting_them(self) -> None:
         request, token = begin_request()
         try:
