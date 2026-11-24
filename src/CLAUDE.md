@@ -1,6 +1,6 @@
 # Frontend Engineering Instructions
 
-> Scope: Everything inside `src/`. These instructions extend the repository-level `CLAUDE.md`; they do not replace it. Follow both files. If instructions conflict, follow the more specific instruction for the task and preserve the repository's established architecture.
+> Scope: Files inside `src/`. These instructions are scoped to the frontend source tree. When a repository-root `CLAUDE.md` exists in the checked-out project, follow it as the project-wide guide as well; this file adds frontend-specific rules and does not replace it. If the root guide is absent, do not assume or invent its contents—these instructions still apply to `src/`. Resolve conflicts by honoring the applicable higher-priority instructions and preserving the established architecture.
 
 ## 1. Role and Mission
 
@@ -14,16 +14,16 @@ Do not optimize for impressive-looking code or animations at the expense of usab
 
 This repository currently uses:
 
-- Next.js **16.3.4** with the App Router.
-- React **19.2.3** and TypeScript **5.9**, with TypeScript strict mode enabled.
-- Tailwind CSS **4.3**.
+- Next.js `16.3.4` with the App Router.
+- React `19.2.3` and TypeScript `^5.9.2`; TypeScript strict mode is enabled.
+- Tailwind CSS `^4.3.3` through the Tailwind v4 PostCSS plugin.
 - `next-themes` for dark/light theme handling.
 - Motion (`motion/react`), GSAP with ScrollTrigger, and Lenis for motion and scrolling.
 - Three.js with React Three Fiber for the hero visual.
 - `lucide-react` for interface icons.
 - Next.js metadata, robots, sitemap, and `next/image` for SEO and image delivery.
 
-Use the installed versions and APIs already declared in `package.json`. Do not assume a different framework, router, styling system, or package manager.
+These are the dependency declarations currently present in the root `package.json`; caret (`^`) ranges are not exact installed versions. Use `package-lock.json` as the source of truth for resolved versions. Do not assume a different framework, router, styling system, or package manager, and do not upgrade dependencies as part of unrelated feature work.
 
 ### Source layout
 
@@ -145,7 +145,7 @@ Treat performance as a feature and protect real user experience.
 
 - Preserve the existing global metadata setup in `src/app/layout.tsx`, the centralized `siteConfig`, and the sitemap/robots routes.
 - Keep titles, descriptions, canonical URLs, Open Graph metadata, and social previews accurate and route-specific where needed.
-- Use the canonical production origin from environment/configuration; do not hardcode localhost as the production URL.
+- Use one canonical production origin from `NEXT_PUBLIC_SITE_URL` for metadata, robots, and sitemap generation. The current code falls back to `http://localhost:3000` in `src/app/layout.tsx` and `https://example.com` in `src/app/robots.ts` and `src/app/sitemap.ts`; ensure the environment variable is explicitly configured in every production deployment so these development/placeholder origins never appear in production metadata or sitemaps. When changing this behavior, centralize URL handling rather than creating more independent fallbacks.
 - Ensure important content and links are present in the rendered HTML and are understandable without JavaScript.
 - Use descriptive headings, meaningful internal links, and accurate image alternative text.
 - Add structured data only when it is valid, useful, and supported by real page content. Never fabricate ratings, reviews, organizations, or achievements.
@@ -153,11 +153,20 @@ Treat performance as a feature and protect real user experience.
 
 ## 11. Chatbot and Backend Integration Boundary
 
-The frontend chat experience lives in `src/components/chatbot/ChatWidget.tsx`. Its same-origin Next.js proxy is `src/app/api/chat/route.ts`, which forwards requests to the separate RAG backend.
+The frontend chat experience lives in `src/components/chatbot/ChatWidget.tsx`. Its same-origin Next.js proxy is `src/app/api/chat/route.ts`, which forwards requests to the separate FastAPI RAG backend.
+
+### Observed API contract (verify before changing)
+
+- The browser sends a JSON object containing a `messages` array to `/api/chat`.
+- The FastAPI backend currently accepts 1–12 messages; each message role is `user` or `assistant`, and each content string must contain 1–500 characters.
+- The backend streams a `text/plain; charset=utf-8` response from `/chat`.
+- The backend currently rate-limits `/chat` to 10 requests per minute and 80 per day. Treat these values as implementation details, not frontend constants; verify the backend before changing user-facing rate-limit messaging.
+- The Next.js proxy currently preserves an upstream `429`, but maps other upstream non-success responses to `502`. Do not assume all backend status codes are passed through unchanged. Keep error/status mapping explicit and consistent with the UI.
+- The `GET /api/chat` warm-up route currently makes a best-effort `/health` request and returns `ok` even if the upstream health request fails. Do not interpret that response as proof that the RAG service is healthy.
 
 - Keep backend URLs and secrets server-side. Never expose `RAG_API_SECRET`, private keys, or backend credentials through `NEXT_PUBLIC_*`, browser bundles, rendered HTML, or client-side logs.
 - The browser should call the same-origin `/api/chat` route; do not call the private RAG backend directly from the client.
-- Treat all user input and upstream responses as untrusted. Validate request shape and size at the server boundary, handle upstream failures and timeouts deliberately, and do not expose stack traces or secrets to visitors.
+- Treat all user input and upstream responses as untrusted. Validate request shape and body size at the Next.js API boundary before forwarding, and retain authoritative Pydantic validation in FastAPI. Handle upstream failures, timeouts, and cancellation deliberately; do not expose stack traces or secrets to visitors.
 - Preserve streaming behavior where the upstream contract supports it. Do not buffer a stream unnecessarily.
 - Handle rate limits, network failures, empty responses, malformed payloads, and aborted requests without leaving the UI stuck in a loading state.
 - Keep accessible status feedback and prevent duplicate submissions while a request is in progress.
@@ -173,7 +182,7 @@ The frontend chat experience lives in `src/components/chatbot/ChatWidget.tsx`. I
 - Do not place secrets in source code, public assets, client components, URL query strings, or logs.
 - Use safe URL handling and validate external destinations before rendering user-controlled links.
 - Avoid leaking internal error messages, provider responses, request headers, or environment details to users.
-- Do not trust client-provided identity, role, IP, or authorization claims without server-side verification.
+- Do not trust client-provided identity, role, IP, or authorization claims without server-side verification. The current proxy forwards the first value from `x-forwarded-for` as `x-client-ip`, and the backend uses `x-client-ip` as its rate-limit key. Treat forwarded IP headers as trustworthy only when the deployment platform's trusted proxy is known to overwrite/sanitize them; never assume an arbitrary incoming header is authentic.
 - Keep dependencies current only through deliberate, reviewed upgrades; do not perform unrelated mass upgrades during feature work.
 
 ## 13. Validation Commands
@@ -223,7 +232,7 @@ A frontend task is complete only when:
 
 For every non-trivial task:
 
-1. Restate the expected outcome internally and inspect the relevant implementation before editing.
+1. Confirm the expected outcome from the task and inspect the relevant implementation before editing. State assumptions in the response only when they materially affect the solution.
 2. Identify the smallest set of files and the frontend/backend boundary involved.
 3. Explain the design decision briefly when the task has architectural or performance trade-offs.
 4. Implement in small, reviewable steps using existing patterns.
