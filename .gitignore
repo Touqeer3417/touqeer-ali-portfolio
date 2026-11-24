@@ -65,3 +65,7 @@ pnpm-debug.log*
 .DS_Store
 *.pem
 *.tsbuildinfo
+
+
+/CLAUDE.md
+**/CLAUDE.md
